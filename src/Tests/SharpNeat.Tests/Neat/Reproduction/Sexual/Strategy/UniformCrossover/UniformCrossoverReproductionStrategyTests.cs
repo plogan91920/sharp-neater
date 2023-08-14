@@ -14,7 +14,7 @@ public class UniformCrossoverReproductionStrategyTests
     public void CreateGenome()
     {
         var metaNeatGenome =
-            MetaNeatGenome<double>.CreateAcyclic(
+            NeaterModel<double>.CreateAcyclic(
                 inputNodeCount: 10,
                 outputNodeCount: 20,
                 activationFn: new NeuralNets.Double.ActivationFunctions.ReLU());

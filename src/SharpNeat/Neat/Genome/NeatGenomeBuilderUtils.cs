@@ -16,7 +16,7 @@ internal static class NeatGenomeBuilderUtils
     /// <param name="nodeIndexByIdMap">A mapping from node IDs to node indexes.</param>
     /// <returns>A new instance of <see cref="DirectedGraph"/>.</returns>
     public static DirectedGraph CreateDirectedGraph<T>(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         ConnectionGenes<T> connGenes,
         INodeIdMap nodeIndexByIdMap)
         where T : struct
@@ -33,8 +33,8 @@ internal static class NeatGenomeBuilderUtils
 
         // Construct a new DirectedGraph.
         var digraph = new DirectedGraph(
-            metaNeatGenome.InputNodeCount,
-            metaNeatGenome.OutputNodeCount,
+            metaNeatGenome.InputNodes.Length,
+            metaNeatGenome.InputNodes.Length,
             nodeIndexByIdMap.Count,
             connIds);
 

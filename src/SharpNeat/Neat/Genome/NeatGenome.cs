@@ -42,7 +42,7 @@ public class NeatGenome<T> : IGenome
     /// <summary>
     /// Genome metadata.
     /// </summary>
-    public MetaNeatGenome<T> MetaNeatGenome { get; }
+    public NeaterModel<T> NeaterModel { get; }
 
     /// <summary>
     /// Connection genes data structure.
@@ -107,7 +107,7 @@ public class NeatGenome<T> : IGenome
     /// <summary>
     /// Constructs with the provided ID, birth generation and gene arrays.
     /// </summary>
-    /// <param name="metaNeatGenome">Meta NEAT genome.</param>
+    /// <param name="neaterModel">Meta NEAT genome.</param>
     /// <param name="id">Genome ID.</param>
     /// <param name="birthGeneration">Genome birth generation.</param>
     /// <param name="connGenes">Genome connection genes.</param>
@@ -117,7 +117,7 @@ public class NeatGenome<T> : IGenome
     /// <param name="connectionIndexMap">A mapping between genome connection indexes (in <paramref name="connGenes"/>),
     /// to reordered connections based on depth based node index allocations (optional, acyclic genomes only).</param>
     internal NeatGenome(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> neaterModel,
         int id,
         int birthGeneration,
         ConnectionGenes<T> connGenes,
@@ -129,13 +129,13 @@ public class NeatGenome<T> : IGenome
 #if DEBUG
 
         NeatGenomeAssertions<T>.AssertIsValid(
-            metaNeatGenome, id, birthGeneration,
+            neaterModel, id, birthGeneration,
             connGenes, hiddenNodeIdArr, nodeIndexByIdMap,
             digraph, connectionIndexMap);
 
 #endif
 
-        MetaNeatGenome = metaNeatGenome;
+        NeaterModel = neaterModel;
         Id = id;
         BirthGeneration = birthGeneration;
         ConnectionGenes = connGenes;
@@ -175,7 +175,7 @@ public class NeatGenome<T> : IGenome
         // array as is. We can do this because these arrays are treated as being immutable, i.e., a given genome's weight
         // array will never be changed. E.g. Weight mutation occurs on child genomes that have a copy of the parent
         // genome's weight array.
-        if(!MetaNeatGenome.IsAcyclic)
+        if(!NeaterModel.IsAcyclic)
         {
             return ConnectionGenes._weightArr;
         }

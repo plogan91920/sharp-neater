@@ -28,7 +28,7 @@ internal static class NeatGenomeAssertions<T>
     /// <param name="digraph">The directed graph that the current genome represents.</param>
     /// <param name="connectionIndexMap">A set of connection index mappings.</param>
     public static void AssertIsValid(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         int id,
         int birthGeneration,
         ConnectionGenes<T> connGenes,
@@ -56,7 +56,7 @@ internal static class NeatGenomeAssertions<T>
         AssertNodeCounts(metaNeatGenome, hiddenNodeIdArr, nodeIndexByIdMap, digraph);
 
         // Hidden node IDs.
-        Debug.Assert(ConnectionGenesUtils.ValidateHiddenNodeIds(hiddenNodeIdArr, connGenes._connArr, metaNeatGenome.InputOutputNodeCount));
+        Debug.Assert(ConnectionGenesUtils.ValidateHiddenNodeIds(hiddenNodeIdArr, connGenes._connArr));
 
         // Connections.
         AssertConnections(connGenes, digraph, nodeIndexByIdMap, connectionIndexMap);
@@ -67,15 +67,15 @@ internal static class NeatGenomeAssertions<T>
     #region Private Static Methods
 
     private static void AssertNodeCounts(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> neaterModel,
         int[] hiddenNodeIdArr,
         INodeIdMap nodeIndexByIdMap,
         DirectedGraph digraph)
     {
-        int totalNodeCount = metaNeatGenome.InputNodeCount + metaNeatGenome.OutputNodeCount + hiddenNodeIdArr.Length;
+        int totalNodeCount = neaterModel.InputNodes.Length + neaterModel.InputNodes.Length + hiddenNodeIdArr.Length;
 
-        Debug.Assert(digraph.InputCount == metaNeatGenome.InputNodeCount);
-        Debug.Assert(digraph.OutputCount == metaNeatGenome.OutputNodeCount);
+        Debug.Assert(digraph.InputCount == neaterModel.InputNodes.Length);
+        Debug.Assert(digraph.OutputCount == neaterModel.InputNodes.Length);
         Debug.Assert(digraph.TotalNodeCount == totalNodeCount);
         Debug.Assert(nodeIndexByIdMap.Count == totalNodeCount);
     }
@@ -109,7 +109,7 @@ internal static class NeatGenomeAssertions<T>
     }
 
     private static void AssertAcyclicGraph(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> neaterModel,
         DirectedGraph digraph,
         int[]? connectionIndexMap)
     {
@@ -126,7 +126,7 @@ internal static class NeatGenomeAssertions<T>
         // Layer zero is the input layer, thus the number of nodes in this layer should be at least the number of input nodes.
         // Note. Any node with no incoming connections is also assigned to layer zero, therefore there can be non-input nodes in
         // this layer too.
-        Debug.Assert(layerArr[0].EndNodeIdx >= metaNeatGenome.InputNodeCount);
+        Debug.Assert(layerArr[0].EndNodeIdx >= neaterModel.InputNodes.Length);
 
         // EndNodeIdx is strictly increasing, as is EndConnectionIdx.
         // Note. There is always at least one node in a layer (otherwise the layer would not exist).

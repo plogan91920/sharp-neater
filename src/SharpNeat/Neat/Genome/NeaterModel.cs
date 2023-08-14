@@ -9,18 +9,47 @@ namespace SharpNeat.Neat.Genome;
 /// Genome related values/settings that are consistent across all genomes for the lifetime of an evolutionary algorithm run.
 /// </summary>
 /// <typeparam name="T">Neural net numeric data type.</typeparam>
-public class MetaNeatGenome<T>
+public class NeaterModel<T>
     where T : struct
 {
     /// <summary>
-    /// Input node count.
+    /// Unique concepts observed in the simulation.
     /// </summary>
-    public int InputNodeCount { get; }
+    Dictionary<string, NeaterConcept<T>> concepts = new Dictionary<string, NeaterConcept<T>>();
 
     /// <summary>
-    /// Output node count.
+    /// Input node keys from all concepts.
     /// </summary>
-    public int OutputNodeCount { get; }
+    public NodeKey[] InputNodes
+    {
+        get
+        {
+            List<NodeKey> inputNodes = new List<NodeKey>();
+            foreach ((string conceptKey, NeaterConcept<T> concept) in concepts)
+            {
+                foreach ((string _, int id) in concept.InputNodes)
+                    inputNodes.Add(new NodeKey(conceptKey, id));
+            }
+            return inputNodes.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Input node keys from all concepts.
+    /// </summary>
+    public NodeKey[] OutputNodes
+    {
+        get
+        {
+            List<NodeKey> outputNodes = new List<NodeKey>();
+            foreach ((string conceptKey, NeaterConcept<T> concept) in concepts)
+            {
+                foreach ((string _, int id) in concept.OutputNodes)
+                    outputNodes.Add(new NodeKey(conceptKey, id));
+            }
+            return outputNodes.ToArray();
+        }
+    }
 
     /// <summary>
     /// Indicates if the genomes that are evolved are acyclic, i.e. they should have no recurrent/cyclic
@@ -47,18 +76,11 @@ public class MetaNeatGenome<T>
     /// </summary>
     public double ConnectionWeightScale { get; }
 
-    /// <summary>
-    /// The total number of input and output nodes.
-    /// </summary>
-    public int InputOutputNodeCount => InputNodeCount + OutputNodeCount;
-
     #region Construction
 
     /// <summary>
     /// Construct a new instance.
     /// </summary>
-    /// <param name="inputNodeCount">Input node count.</param>
-    /// <param name="outputNodeCount">Output node count.</param>
     /// <param name="isAcyclic">Indicates if the genomes that are evolved are acyclic, i.e. they should have no
     /// recurrent/cyclic connection paths.</param>
     /// <param name="cyclesPerActivation">For cyclic neural networks (i.e. if <see cref="IsAcyclic"/> = false)
@@ -66,19 +88,13 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    internal MetaNeatGenome(
-        int inputNodeCount, int outputNodeCount,
+    internal NeaterModel(
         bool isAcyclic, int cyclesPerActivation,
         IActivationFunction<T> activationFn,
         double connectionWeightScale = 5.0)
     {
-        // Note. Zero input nodes is allowed, but zero output nodes is nonsensical.
-        if(inputNodeCount < 0) throw new ArgumentOutOfRangeException(nameof(inputNodeCount));
-        if(outputNodeCount < 1) throw new ArgumentOutOfRangeException(nameof(outputNodeCount));
         if(!isAcyclic && cyclesPerActivation < 1) throw new ArgumentOutOfRangeException(nameof(cyclesPerActivation));
 
-        InputNodeCount = inputNodeCount;
-        OutputNodeCount = outputNodeCount;
         IsAcyclic = isAcyclic;
         CyclesPerActivation = cyclesPerActivation;
         ActivationFn = activationFn;
@@ -90,7 +106,7 @@ public class MetaNeatGenome<T>
     #region Static Factory Methods
 
     /// <summary>
-    /// Create a new instance of <see cref="MetaNeatGenome{T}"/>, with <see cref="IsAcyclic"/> set to true, i.e.,
+    /// Create a new instance of <see cref="NeaterModel{T}"/>, with <see cref="IsAcyclic"/> set to true, i.e.,
     /// for evolving acyclic neural networks.
     /// </summary>
     /// <param name="inputNodeCount">Input node count.</param>
@@ -98,21 +114,20 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<T> CreateAcyclic(
+    /// <returns>A new instance of <see cref="NeaterModel{T}"/>.</returns>
+    public static NeaterModel<T> CreateAcyclic(
         int inputNodeCount, int outputNodeCount,
         IActivationFunction<T> activationFn,
         double connectionWeightScale = 5.0)
     {
-        return new MetaNeatGenome<T>(
-            inputNodeCount, outputNodeCount,
+        return new NeaterModel<T>(
             true, 0,
             activationFn,
             connectionWeightScale);
     }
 
     /// <summary>
-    /// Create a new instance of <see cref="MetaNeatGenome{T}"/>, with <see cref="IsAcyclic"/> set to false, i.e.,
+    /// Create a new instance of <see cref="NeaterModel{T}"/>, with <see cref="IsAcyclic"/> set to false, i.e.,
     /// for evolving cyclic neural networks.
     /// </summary>
     /// <param name="inputNodeCount">Input node count.</param>
@@ -122,19 +137,45 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<T> CreateCyclic(
+    /// <returns>A new instance of <see cref="NeaterModel{T}"/>.</returns>
+    public static NeaterModel<T> CreateCyclic(
         int inputNodeCount, int outputNodeCount,
         int cyclesPerActivation,
         IActivationFunction<T> activationFn,
         double connectionWeightScale = 5.0)
     {
-        return new MetaNeatGenome<T>(
-            inputNodeCount, outputNodeCount,
+        return new NeaterModel<T>(
             false, cyclesPerActivation,
             activationFn,
             connectionWeightScale);
     }
 
     #endregion
+}
+
+/// <summary>
+/// A complex key demonstrating the nodes position.
+/// </summary>
+public struct NodeKey
+{
+    /// <summary>
+    /// The key of the concept that owns this node.
+    /// </summary>
+    public string Key;
+
+    /// <summary>
+    /// The Id of this node within it's concept.
+    /// </summary>
+    public int Id;
+
+    /// <summary>
+    /// A basic Constructor.
+    /// </summary>
+    /// <param name="key">/// The key of the concept that owns this node.</param>
+    /// <param name="id">/// The Id of this node within it's concept.</param>
+    public NodeKey(string key, int id)
+    {
+        Key = key;
+        Id = id;
+    }
 }

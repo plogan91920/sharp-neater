@@ -7,7 +7,7 @@ public static class NestGenomeTestUtils
     public static NeatPopulation<double> CreateNeatPopulation()
     {
         var metaNeatGenome =
-            MetaNeatGenome<double>.CreateCyclic(
+            NeaterModel<double>.CreateCyclic(
                 inputNodeCount: 1,
                 outputNodeCount: 1,
                 cyclesPerActivation: 1,

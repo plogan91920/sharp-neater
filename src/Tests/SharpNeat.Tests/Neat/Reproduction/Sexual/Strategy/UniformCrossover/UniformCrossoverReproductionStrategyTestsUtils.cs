@@ -4,7 +4,7 @@ namespace SharpNeat.Neat.Reproduction.Sexual.Strategy.UniformCrossover;
 
 public class UniformCrossoverReproductionStrategyTestsUtils
 {
-    static readonly MetaNeatGenome<double> __metaNeatGenome;
+    static readonly NeaterModel<double> __metaNeatGenome;
     static readonly INeatGenomeBuilder<double> __genomeBuilder;
 
     static UniformCrossoverReproductionStrategyTestsUtils()
@@ -40,9 +40,9 @@ public class UniformCrossoverReproductionStrategyTestsUtils
 
     #region Private Static Methods
 
-    private static MetaNeatGenome<double> CreateMetaNeatGenome()
+    private static NeaterModel<double> CreateMetaNeatGenome()
     {
-        return new MetaNeatGenome<double>(
+        return new NeaterModel<double>(
             inputNodeCount: 1,
             outputNodeCount: 1,
             isAcyclic: false,

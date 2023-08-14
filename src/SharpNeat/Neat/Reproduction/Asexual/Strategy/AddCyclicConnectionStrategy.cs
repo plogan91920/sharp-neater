@@ -17,7 +17,7 @@ namespace SharpNeat.Neat.Reproduction.Asexual.Strategy;
 public sealed class AddCyclicConnectionStrategy<T> : IAsexualReproductionStrategy<T>
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeaterModel<T> _metaNeatGenome;
     readonly INeatGenomeBuilder<T> _genomeBuilder;
     readonly Int32Sequence _genomeIdSeq;
     readonly Int32Sequence _generationSeq;
@@ -35,7 +35,7 @@ public sealed class AddCyclicConnectionStrategy<T> : IAsexualReproductionStrateg
     /// <param name="genomeIdSeq">Genome ID sequence; for obtaining new genome IDs.</param>
     /// <param name="generationSeq">Generation sequence; for obtaining the current generation number.</param>
     public AddCyclicConnectionStrategy(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,
         Int32Sequence generationSeq)
@@ -138,13 +138,13 @@ public sealed class AddCyclicConnectionStrategy<T> : IAsexualReproductionStrateg
         out DirectedConnection conn,
         out int insertIdx)
     {
-        int inputCount = _metaNeatGenome.InputNodeCount;
-        int outputCount = _metaNeatGenome.OutputNodeCount;
+        int inputCount = _metaNeatGenome.InputNodes.Length;
+        int outputCount = _metaNeatGenome.InputNodes.Length;
         int hiddenCount = parent.HiddenNodeIdArray.Length;
 
         // Select a source node at random.
         // Note. this can be any node (input, output or hidden).
-        int totalNodeCount = parent.MetaNeatGenome.InputOutputNodeCount + hiddenCount;
+        int totalNodeCount = parent.NeaterModel.InputNodes.Length + parent.NeaterModel.OutputNodes.Length + hiddenCount;
         int srcId = GetNodeIdFromIndex(parent, rng.Next(totalNodeCount));
 
         // Select a target node at random.

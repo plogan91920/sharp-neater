@@ -22,9 +22,9 @@ public static class NeatGenomeConverter
         where T : struct
     {
         // Convert input and output counts, and cyclic/acyclic indicator.
-        int inputCount = genome.MetaNeatGenome.InputNodeCount;
-        int outputCount = genome.MetaNeatGenome.OutputNodeCount;
-        bool isAcyclic = genome.MetaNeatGenome.IsAcyclic;
+        int inputCount = genome.NeaterModel.InputNodes.Length;
+        int outputCount = genome.NeaterModel.OutputNodes.Length;
+        bool isAcyclic = genome.NeaterModel.IsAcyclic;
 
         // Convert connections.
         ConnectionGenes<T> connGenes = genome.ConnectionGenes;
@@ -47,7 +47,7 @@ public static class NeatGenomeConverter
         // Convert activation function(s).
         // Note. By convention we use the activation function type short name as function code (e.g. "ReLU",
         // or "Logistic").
-        ActivationFnLine actFnLine = new(0, genome.MetaNeatGenome.ActivationFn.GetType().Name);
+        ActivationFnLine actFnLine = new(0, genome.NeaterModel.ActivationFn.GetType().Name);
         List<ActivationFnLine> actFnLines = new()
         {
             actFnLine
@@ -56,7 +56,7 @@ public static class NeatGenomeConverter
         return new NetFileModel(
             inputCount, outputCount,
             isAcyclic,
-            genome.MetaNeatGenome.CyclesPerActivation,
+            genome.NeaterModel.CyclesPerActivation,
             connList, actFnLines);
     }
 
@@ -65,52 +65,52 @@ public static class NeatGenomeConverter
     /// </summary>
     /// <typeparam name="T">Neural net numeric data type.</typeparam>
     /// <param name="model">The <see cref="NetFileModel"/> instance to convert from.</param>
-    /// <param name="metaNeatGenome">A <see cref="MetaNeatGenome{T}"/> instance; required to construct a new
-    /// <see cref="MetaNeatGenome{T}"/>.</param>
+    /// <param name="neaterModel">A <see cref="NeaterModel{T}"/> instance; required to construct a new
+    /// <see cref="NeaterModel{T}"/>.</param>
     /// <param name="genomeId">The ID to assign to the created genome instance.</param>
     /// <param name="throwIfActivationFnMismatch">If true then an exception is thrown if the activation function
-    /// defined on <paramref name="model"/> does not match the one defined on <paramref name="metaNeatGenome"/>.
-    /// If false, and there is a mismatch, then the activation defined on the <see cref="MetaNeatGenome{T}"/> is used.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
+    /// defined on <paramref name="model"/> does not match the one defined on <paramref name="neaterModel"/>.
+    /// If false, and there is a mismatch, then the activation defined on the <see cref="NeaterModel{T}"/> is used.</param>
+    /// <returns>A new instance of <see cref="NeaterModel{T}"/>.</returns>
     public static NeatGenome<T> ToNeatGenome<T>(
         NetFileModel model,
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> neaterModel,
         int genomeId,
         bool throwIfActivationFnMismatch = true)
         where T : struct
     {
         ArgumentNullException.ThrowIfNull(model);
-        ArgumentNullException.ThrowIfNull(metaNeatGenome);
+        ArgumentNullException.ThrowIfNull(neaterModel);
 
         // Check that the IsAcyclic flag is the same on metaNeatGenome and netFileModel.
-        if(model.IsAcyclic ^ metaNeatGenome.IsAcyclic)
+        if(model.IsAcyclic ^ neaterModel.IsAcyclic)
         {
             throw new ArgumentException(
-                $"The {nameof(MetaNeatGenome<T>)} and {nameof(NetFileModel)} arguments specify different values for the IsAcyclic flag.",
+                $"The {nameof(NeaterModel<T>)} and {nameof(NetFileModel)} arguments specify different values for the IsAcyclic flag.",
                 nameof(model));
         }
 
         // Check input and output counts.
-        if(model.InputCount != metaNeatGenome.InputNodeCount)
+        if(model.InputCount != neaterModel.InputNodes.Length)
         {
             throw new ArgumentException(
-                $"The {nameof(MetaNeatGenome<T>)} and {nameof(NetFileModel)} arguments specify different input node counts.",
+                $"The {nameof(NeaterModel<T>)} and {nameof(NetFileModel)} arguments specify different input node counts.",
                 nameof(model));
         }
 
-        if(model.OutputCount != metaNeatGenome.OutputNodeCount)
+        if(model.OutputCount != neaterModel.OutputNodes.Length)
         {
             throw new ArgumentException(
-                $"The {nameof(MetaNeatGenome<T>)} and {nameof(NetFileModel)} arguments specify different output node counts.",
+                $"The {nameof(NeaterModel<T>)} and {nameof(NetFileModel)} arguments specify different output node counts.",
                 nameof(model));
         }
 
         // Optionally check if the metaNeatGenome and netFileModel specify a different activation function.
         if (throwIfActivationFnMismatch
-            && !string.Equals(model.ActivationFns[0].Code, metaNeatGenome.ActivationFn.GetType().Name, StringComparison.Ordinal))
+            && !string.Equals(model.ActivationFns[0].Code, neaterModel.ActivationFn.GetType().Name, StringComparison.Ordinal))
         {
             throw new ArgumentException(
-                $"The {nameof(MetaNeatGenome<T>)} and {nameof(NetFileModel)} arguments specify different activation functions.",
+                $"The {nameof(NeaterModel<T>)} and {nameof(NetFileModel)} arguments specify different activation functions.",
                 nameof(model));
         }
 
@@ -119,7 +119,7 @@ public static class NeatGenomeConverter
 
         // Get a genome builder instance.
         // Note. the builder type depends on IsAcyclic.
-        INeatGenomeBuilder<T> genomeBuilder = NeatGenomeBuilderFactory<T>.Create(metaNeatGenome, true);
+        INeatGenomeBuilder<T> genomeBuilder = NeatGenomeBuilderFactory<T>.Create(neaterModel, true);
 
         // Create a genome instance.
         NeatGenome<T> genome = genomeBuilder.Create(genomeId, 0, connGenes);

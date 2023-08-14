@@ -8,7 +8,7 @@ public class NeatGenomeLoaderTests
     [Fact]
     public void LoadGenome()
     {
-        var metaNeatGenome = MetaNeatGenome<double>.CreateAcyclic(3, 2, new ReLU());
+        var metaNeatGenome = NeaterModel<double>.CreateAcyclic(3, 2, new ReLU());
 
         // Load test genome.
         NeatGenome<double> genomeLoaded = NeatGenomeLoader.Load(
@@ -23,7 +23,7 @@ public class NeatGenomeLoaderTests
 
     #region Private Static Methods
 
-    private static NeatGenome<double> CreateGenome1(MetaNeatGenome<double> metaNeatGenome)
+    private static NeatGenome<double> CreateGenome1(NeaterModel<double> metaNeatGenome)
     {
         var genomeBuilder = NeatGenomeBuilderFactory<double>.Create(metaNeatGenome);
 

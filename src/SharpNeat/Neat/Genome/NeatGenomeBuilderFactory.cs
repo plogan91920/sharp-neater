@@ -20,7 +20,7 @@ public static class NeatGenomeBuilderFactory<T>
     /// <paramref name="validateAcyclic"/> can be set to false to avoid the cost of the cyclic graph check (which is relatively expensive to perform).
     /// </remarks>
     public static INeatGenomeBuilder<T> Create(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         bool validateAcyclic = false)
     {
         if(metaNeatGenome.IsAcyclic)

@@ -7,7 +7,7 @@ namespace SharpNeat.Tasks.FunctionRegression;
 /// <summary>
 /// Evaluation scheme for the function regression task.
 /// </summary>
-public sealed class FuncRegressionEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class FuncRegressionEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
     readonly ParamSamplingInfo _paramSamplingInfo;
     readonly double _gradientMseWeight;
@@ -19,12 +19,6 @@ public sealed class FuncRegressionEvaluationScheme : IBlackBoxEvaluationScheme<d
     readonly IBlackBoxProbe _blackBoxProbe;
 
     #region Auto Properties [IBlackBoxEvaluationScheme]
-
-    /// <inheritdoc/>
-    public int InputCount => 2;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
 
     /// <inheritdoc/>
     public bool IsDeterministic => true;

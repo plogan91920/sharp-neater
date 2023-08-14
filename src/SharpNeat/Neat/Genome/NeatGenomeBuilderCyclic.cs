@@ -11,17 +11,17 @@ namespace SharpNeat.Neat.Genome;
 public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeaterModel<T> _neaterModel;
     readonly HashSet<int> _workingIdSet;
 
     /// <summary>
     /// Construct with the given NEAT genome metadata.
     /// </summary>
-    /// <param name="metaNeatGenome">NEAT genome metadata.</param>
-    public NeatGenomeBuilderCyclic(MetaNeatGenome<T> metaNeatGenome)
+    /// <param name="neaterModel">NEAT genome metadata.</param>
+    public NeatGenomeBuilderCyclic(NeaterModel<T> neaterModel)
     {
-        Debug.Assert(metaNeatGenome is not null && !metaNeatGenome.IsAcyclic);
-        _metaNeatGenome = metaNeatGenome;
+        Debug.Assert(neaterModel is not null && !neaterModel.IsAcyclic);
+        _neaterModel = neaterModel;
         _workingIdSet = new HashSet<int>();
     }
 
@@ -36,7 +36,6 @@ public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
         // Determine the set of node IDs, and create a mapping from node IDs to node indexes.
         int[] hiddenNodeIdArr = ConnectionGenesUtils.CreateHiddenNodeIdArray(
             connGenes._connArr,
-            _metaNeatGenome.InputOutputNodeCount,
             _workingIdSet);
 
         return Create(id, birthGeneration, connGenes, hiddenNodeIdArr);
@@ -50,7 +49,7 @@ public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
     {
         // Create a mapping from node IDs to node indexes.
         INodeIdMap nodeIndexByIdMap = DirectedGraphBuilderUtils.CompileNodeIdMap(
-            _metaNeatGenome.InputOutputNodeCount, hiddenNodeIdArr);
+            _neaterModel.InputNodes.Length + _neaterModel.OutputNodes.Length, hiddenNodeIdArr);
 
         return Create(id, birthGeneration, connGenes, hiddenNodeIdArr, nodeIndexByIdMap);
     }
@@ -64,10 +63,10 @@ public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
     {
         // Create a digraph from the genome.
         DirectedGraph digraph = NeatGenomeBuilderUtils.CreateDirectedGraph(
-            _metaNeatGenome, connGenes, nodeIndexByIdMap);
+            _neaterModel, connGenes, nodeIndexByIdMap);
 
         return new NeatGenome<T>(
-            _metaNeatGenome,
+            _neaterModel,
             id,
             birthGeneration,
             connGenes,
@@ -90,7 +89,7 @@ public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
         Debug.Assert(connectionIndexMap is null);
 
         return new NeatGenome<T>(
-            _metaNeatGenome,
+            _neaterModel,
             id,
             birthGeneration,
             connGenes,

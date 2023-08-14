@@ -13,12 +13,10 @@ internal static class ConnectionGenesUtils
     /// Create a sorted array of hidden node IDs.
     /// </summary>
     /// <param name="connArr">An array of directed connections from which to extract/determine the hidden node IDs.</param>
-    /// <param name="inputOutputCount">The number of input and output nodes. Hidden node IDs start after these nodes.</param>
     /// <param name="workingIdSet">A working/reusable hashset. This is cleared and re-populated with the hidden nodes IDs before returning.</param>
     /// <returns>A new array that contains all of the hidden node IDs, sorted in ascending order.</returns>
     public static int[] CreateHiddenNodeIdArray(
         DirectedConnection[] connArr,
-        int inputOutputCount,
         HashSet<int> workingIdSet)
     {
         workingIdSet.Clear();
@@ -26,10 +24,10 @@ internal static class ConnectionGenesUtils
         foreach(var conn in connArr)
         {
             // Skip input and output node IDs (these start from zero and go up to inputOutputCount-1).
-            if(conn.SourceId >= inputOutputCount)
+            if(conn.SourceId > 0)
                 workingIdSet.Add(conn.SourceId);
 
-            if(conn.TargetId >= inputOutputCount)
+            if(conn.TargetId > 0)
                 workingIdSet.Add(conn.TargetId);
         }
 
@@ -43,19 +41,17 @@ internal static class ConnectionGenesUtils
     /// </summary>
     /// <param name="hiddenNodeIdArr">Array of hidden node IDs.</param>
     /// <param name="connArr">Array of connections.</param>
-    /// <param name="inputOutputCount">The total number of input and output nodes.</param>
     /// <returns>true if the provided data is valid; otherwise false.</returns>
     public static bool ValidateHiddenNodeIds(
         int[] hiddenNodeIdArr,
-        DirectedConnection[] connArr,
-        int inputOutputCount)
+        DirectedConnection[] connArr)
     {
         // Test that the IDs are sorted (required to allow for efficient searching of IDs using a binary search).
         if(!SortUtils.IsSortedAscending<int>(hiddenNodeIdArr))
             return false;
 
         // Get the set of hidden node IDs described by the connections, and test that they match the supplied hiddenNodeIdArr.
-        int[] idArr = CreateHiddenNodeIdArray(connArr, inputOutputCount, new HashSet<int>());
+        int[] idArr = CreateHiddenNodeIdArray(connArr, new HashSet<int>());
         if(!SpanUtils.Equal<int>(idArr, hiddenNodeIdArr))
             return false;
 

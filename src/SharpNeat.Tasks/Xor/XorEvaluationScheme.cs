@@ -7,14 +7,8 @@ namespace SharpNeat.Tasks.Xor;
 /// <summary>
 /// Evaluation scheme for the logical XOR task.
 /// </summary>
-public sealed class XorEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class XorEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
-    /// <inheritdoc/>
-    public int InputCount => 3;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
-
     /// <inheritdoc/>
     public bool IsDeterministic => true;
 

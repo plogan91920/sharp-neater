@@ -45,7 +45,7 @@ public interface INeatExperiment<T>
     /// <summary>
     /// Experiment evaluation scheme object.
     /// </summary>
-    IBlackBoxEvaluationScheme<T> EvaluationScheme { get; }
+    IPhenomeEvaluationScheme<IBlackBox<T>> EvaluationScheme { get; }
 
     /// <summary>
     /// A boolean flag that indicates if the genomes that are evolved are acyclic,

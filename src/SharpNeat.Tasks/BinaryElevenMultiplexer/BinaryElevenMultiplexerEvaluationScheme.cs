@@ -7,14 +7,8 @@ namespace SharpNeat.Tasks.BinaryElevenMultiplexer;
 /// <summary>
 /// Evaluation scheme for the Binary 11-Multiplexer task.
 /// </summary>
-public sealed class BinaryElevenMultiplexerEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class BinaryElevenMultiplexerEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
-    /// <inheritdoc/>
-    public int InputCount => 12;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
-
     /// <inheritdoc/>
     public bool IsDeterministic => true;
 

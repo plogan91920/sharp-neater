@@ -19,13 +19,13 @@ public sealed class NeatGenomeDecoderCyclic : IGenomeDecoder<NeatGenome<double>,
     public IBlackBox<double> Decode(NeatGenome<double> genome)
     {
         // Note. In principle an acyclic net can be decoded to a cyclic network (but not the other way around), but standard sharpneat behaviour is not to support this.
-        Debug.Assert(!genome.MetaNeatGenome.IsAcyclic);
+        Debug.Assert(!genome.NeaterModel.IsAcyclic);
 
         // Create a working neural net.
         return new NeuralNetCyclic(
                 genome.DirectedGraph,
                 genome.ConnectionGenes._weightArr,
-                genome.MetaNeatGenome.ActivationFn.Fn,
-                genome.MetaNeatGenome.CyclesPerActivation);
+                genome.NeaterModel.ActivationFn.Fn,
+                genome.NeaterModel.CyclesPerActivation);
     }
 }

@@ -32,7 +32,7 @@ public static class NeatUtils
     {
         // Validate MetaNeatGenome and NeatExperiment are compatible; normally the former should have been created
         // based on the latter, but this is not enforced.
-        MetaNeatGenome<double> metaNeatGenome = neatPop.MetaNeatGenome;
+        NeaterModel<double> metaNeatGenome = neatPop.MetaNeatGenome;
         ValidateCompatible(neatExperiment, metaNeatGenome);
 
         // Create a genomeList evaluator based on the experiment's configuration settings.
@@ -102,12 +102,12 @@ public static class NeatUtils
     }
 
     /// <summary>
-    /// Create a <see cref="MetaNeatGenome{T}"/> based on the parameters supplied by an
+    /// Create a <see cref="NeaterModel{T}"/> based on the parameters supplied by an
     /// <see cref="INeatExperiment{T}"/>.
     /// </summary>
     /// <param name="neatExperiment">The neat experiment.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<double> CreateMetaNeatGenome(
+    /// <returns>A new instance of <see cref="NeaterModel{T}"/>.</returns>
+    public static NeaterModel<double> CreateMetaNeatGenome(
         INeatExperiment<double> neatExperiment)
     {
         // Resolve the configured activation function name to an activation function instance.
@@ -117,9 +117,7 @@ public static class NeatUtils
         var activationFn = actFnFactory.GetActivationFunction(
             neatExperiment.ActivationFnName);
 
-        var metaNeatGenome = new MetaNeatGenome<double>(
-            inputNodeCount: neatExperiment.EvaluationScheme.InputCount,
-            outputNodeCount: neatExperiment.EvaluationScheme.OutputCount,
+        var metaNeatGenome = new NeaterModel<double>(
             isAcyclic: neatExperiment.IsAcyclic,
             cyclesPerActivation: neatExperiment.CyclesPerActivation,
             activationFn: activationFn,
@@ -180,20 +178,13 @@ public static class NeatUtils
 
     private static void ValidateCompatible(
         INeatExperiment<double> neatExperiment,
-        MetaNeatGenome<double> metaNeatGenome)
+        NeaterModel<double> neaterModel)
     {
-        // Confirm that neatExperiment and metaNeatGenome are compatible with each other.
-        if(neatExperiment.EvaluationScheme.InputCount != metaNeatGenome.InputNodeCount)
-            throw new ArgumentException("InputNodeCount does not match INeatExperiment.", nameof(metaNeatGenome));
+        if(neatExperiment.IsAcyclic != neaterModel.IsAcyclic)
+            throw new ArgumentException("IsAcyclic does not match INeatExperiment.", nameof(neaterModel));
 
-        if(neatExperiment.EvaluationScheme.OutputCount != metaNeatGenome.OutputNodeCount)
-            throw new ArgumentException("OutputNodeCount does not match INeatExperiment.", nameof(metaNeatGenome));
-
-        if(neatExperiment.IsAcyclic != metaNeatGenome.IsAcyclic)
-            throw new ArgumentException("IsAcyclic does not match INeatExperiment.", nameof(metaNeatGenome));
-
-        if(neatExperiment.ConnectionWeightScale != metaNeatGenome.ConnectionWeightScale)
-            throw new ArgumentException("ConnectionWeightScale does not match INeatExperiment.", nameof(metaNeatGenome));
+        if(neatExperiment.ConnectionWeightScale != neaterModel.ConnectionWeightScale)
+            throw new ArgumentException("ConnectionWeightScale does not match INeatExperiment.", nameof(neaterModel));
 
         // Note. neatExperiment.ActivationFnName is not being checked against metaNeatGenome.ActivationFn, as the
         // name information is not present on the ActivationFn object.

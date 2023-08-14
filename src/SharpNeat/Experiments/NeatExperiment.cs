@@ -24,7 +24,7 @@ public class NeatExperiment<T> : INeatExperiment<T>
     /// <param name="factoryId">Experiment Factory ID.</param>
     /// <param name="id">Experiment ID (optional).</param>
     public NeatExperiment(
-        IBlackBoxEvaluationScheme<T> evalScheme,
+        IPhenomeEvaluationScheme<IBlackBox<T>> evalScheme,
         string factoryId,
         string? id = null)
     {
@@ -64,7 +64,7 @@ public class NeatExperiment<T> : INeatExperiment<T>
     public string Description { get; set; } = string.Empty;
 
     /// <inheritdoc/>
-    public IBlackBoxEvaluationScheme<T> EvaluationScheme { get; }
+    public IPhenomeEvaluationScheme<IBlackBox<T>> EvaluationScheme { get; }
 
     /// <inheritdoc/>
     public bool IsAcyclic { get; set; }

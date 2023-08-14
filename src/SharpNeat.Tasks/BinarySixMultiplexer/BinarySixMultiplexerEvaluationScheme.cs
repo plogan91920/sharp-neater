@@ -7,14 +7,8 @@ namespace SharpNeat.Tasks.BinarySixMultiplexer;
 /// <summary>
 /// Evaluation scheme for the Binary 6-Multiplexer task.
 /// </summary>
-public sealed class BinarySixMultiplexerEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class BinarySixMultiplexerEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
-    /// <inheritdoc/>
-    public int InputCount => 7;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
-
     /// <inheritdoc/>
     public bool IsDeterministic => true;
 

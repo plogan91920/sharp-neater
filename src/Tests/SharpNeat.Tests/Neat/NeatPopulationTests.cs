@@ -11,8 +11,8 @@ public class NeatPopulationTests
     [Fact]
     public void CreatePopulation()
     {
-        MetaNeatGenome<double> metaNeatGenome =
-            MetaNeatGenome<double>.CreateAcyclic(
+        NeaterModel<double> metaNeatGenome =
+            NeaterModel<double>.CreateAcyclic(
                 inputNodeCount: 3,
                 outputNodeCount: 2,
                 activationFn: new NeuralNets.Double.ActivationFunctions.ReLU());
@@ -43,8 +43,8 @@ public class NeatPopulationTests
     [Fact]
     public void VerifyInitialConnections()
     {
-        MetaNeatGenome<double> metaNeatGenome =
-            MetaNeatGenome<double>.CreateAcyclic(
+        NeaterModel<double> metaNeatGenome =
+            NeaterModel<double>.CreateAcyclic(
                 inputNodeCount: 100,
                 outputNodeCount: 200,
                 activationFn: new NeuralNets.Double.ActivationFunctions.ReLU());

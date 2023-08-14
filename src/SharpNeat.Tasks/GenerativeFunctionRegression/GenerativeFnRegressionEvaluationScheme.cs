@@ -8,7 +8,7 @@ namespace SharpNeat.Tasks.GenerativeFunctionRegression;
 /// <summary>
 /// Evaluation scheme for the function regression task.
 /// </summary>
-public sealed class GenerativeFnRegressionEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class GenerativeFnRegressionEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
     readonly ParamSamplingInfo _paramSamplingInfo;
     readonly double _gradientMseWeight;
@@ -20,12 +20,6 @@ public sealed class GenerativeFnRegressionEvaluationScheme : IBlackBoxEvaluation
     readonly IBlackBoxProbe _blackBoxProbe;
 
     #region Auto Properties [IBlackBoxEvaluationScheme]
-
-    /// <inheritdoc/>
-    public int InputCount => 1;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
 
     /// <inheritdoc/>
     public bool IsDeterministic => true;

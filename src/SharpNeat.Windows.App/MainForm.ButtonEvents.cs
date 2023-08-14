@@ -37,7 +37,7 @@ partial class MainForm
     private void btnCreateRandomPop_Click(object sender, EventArgs e)
     {
         INeatExperiment<double> neatExperiment = GetNeatExperiment();
-        MetaNeatGenome<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neatExperiment);
+        NeaterModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neatExperiment);
 
         // Create an initial population of genomes.
         _neatPop = NeatPopulationFactory<double>.CreatePopulation(

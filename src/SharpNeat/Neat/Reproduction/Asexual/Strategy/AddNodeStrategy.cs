@@ -16,7 +16,7 @@ namespace SharpNeat.Neat.Reproduction.Asexual.Strategy;
 public sealed class AddNodeStrategy<T> : IAsexualReproductionStrategy<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeaterModel<T> _metaNeatGenome;
     readonly INeatGenomeBuilder<T> _genomeBuilder;
     readonly Int32Sequence _genomeIdSeq;
     readonly Int32Sequence _innovationIdSeq;
@@ -35,7 +35,7 @@ public sealed class AddNodeStrategy<T> : IAsexualReproductionStrategy<T>
     /// <param name="generationSeq">Generation sequence; for obtaining the current generation number.</param>
     /// <param name="addedNodeBuffer">A history buffer of added nodes.</param>
     public AddNodeStrategy(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,
         Int32Sequence innovationIdSeq,

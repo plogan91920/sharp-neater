@@ -7,14 +7,8 @@ namespace SharpNeat.Tasks.BinaryThreeMultiplexer;
 /// <summary>
 /// Evaluation scheme for the Binary 3-Multiplexer task.
 /// </summary>
-public sealed class BinaryThreeMultiplexerEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class BinaryThreeMultiplexerEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
-    /// <inheritdoc/>
-    public int InputCount => 4;
-
-    /// <inheritdoc/>
-    public int OutputCount => 1;
-
     /// <inheritdoc/>
     public bool IsDeterministic => true;
 

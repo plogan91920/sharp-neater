@@ -16,7 +16,7 @@ namespace SharpNeat.Neat;
 public class NeatPopulationFactory<T>
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeaterModel<T> _metaNeatGenome;
     readonly INeatGenomeBuilder<T> _genomeBuilder;
     readonly double _connectionsProportion;
     readonly DirectedConnection[] _connectionDefArr;
@@ -29,7 +29,7 @@ public class NeatPopulationFactory<T>
     #region Constructor
 
     private NeatPopulationFactory(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         double connectionsProportion,
         IRandomSource rng)
     {
@@ -38,8 +38,8 @@ public class NeatPopulationFactory<T>
         _connectionsProportion = connectionsProportion;
 
         // Define the set of all possible connections between the input and output nodes (fully interconnected).
-        int inputCount = metaNeatGenome.InputNodeCount;
-        int outputCount = metaNeatGenome.OutputNodeCount;
+        int inputCount = metaNeatGenome.InputNodes.Length;
+        int outputCount = metaNeatGenome.InputNodes.Length;
         _connectionDefArr = new DirectedConnection[inputCount * outputCount];
 
         // Notes.
@@ -155,7 +155,7 @@ public class NeatPopulationFactory<T>
     /// <param name="rng">Random source (optional).</param>
     /// <returns>A new instance of <see cref="NeatPopulation{T}"/>.</returns>
     public static NeatPopulation<T> CreatePopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         double connectionsProportion,
         int popSize,
         IRandomSource? rng = null)
@@ -180,7 +180,7 @@ public class NeatPopulationFactory<T>
     /// <param name="rng">Random source (optional).</param>
     /// <returns>A new instance of <see cref="NeatPopulation{T}"/>.</returns>
     public static NeatPopulation<T> CreatePopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         int popSize,
         NeatGenome<T> seedGenome,
         NeatReproductionAsexualSettings reproductionAsexualSettings,
@@ -230,7 +230,7 @@ public class NeatPopulationFactory<T>
     /// <param name="rng">Random source (optional).</param>
     /// <returns>A new instance of <see cref="NeatPopulation{T}"/>.</returns>
     public static NeatPopulation<T> CreatePopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         int popSize,
         List<NeatGenome<T>> seedGenomes,
         NeatReproductionAsexualSettings reproductionAsexualSettings,

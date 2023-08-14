@@ -7,7 +7,7 @@ namespace SharpNeat.Tasks.PreyCapture;
 /// <summary>
 /// Evaluation scheme for the prey capture task.
 /// </summary>
-public sealed class PreyCaptureEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class PreyCaptureEvaluationScheme : IPhenomeEvaluationScheme<IBlackBox<double>>
 {
     readonly int _preyInitMoves;
     readonly float _preySpeed;
@@ -16,12 +16,6 @@ public sealed class PreyCaptureEvaluationScheme : IBlackBoxEvaluationScheme<doub
     readonly int _trialsPerEvaluation;
 
     #region Properties
-
-    /// <inheritdoc/>
-    public int InputCount => 14;
-
-    /// <inheritdoc/>
-    public int OutputCount => 4;
 
     /// <inheritdoc/>
     public bool IsDeterministic => false;

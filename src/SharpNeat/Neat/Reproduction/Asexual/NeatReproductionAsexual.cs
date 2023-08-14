@@ -39,7 +39,7 @@ public class NeatReproductionAsexual<T> : IAsexualReproductionStrategy<T>
     /// <param name="settings">Asexual reproduction settings.</param>
     /// <param name="weightMutationScheme">Connection weight mutation scheme.</param>
     public NeatReproductionAsexual(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeaterModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,
         Int32Sequence innovationIdSeq,

@@ -12,7 +12,7 @@ namespace SharpNeat.Neat.Genome;
 public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeaterModel<T> _metaNeatGenome;
     readonly AcyclicGraphDepthAnalysis _graphDepthAnalysis;
     readonly HashSet<int> _workingIdSet;
 
@@ -31,7 +31,7 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
     /// If the caller can guarantee that calls to Create() will provide acyclic graphs only, then
     /// <paramref name="validateAcyclic"/> can be set to false to avoid the cost of the cyclic graph check (which is relatively expensive to perform).
     /// </remarks>
-    public NeatGenomeBuilderAcyclic(MetaNeatGenome<T> metaNeatGenome, bool validateAcyclic)
+    public NeatGenomeBuilderAcyclic(NeaterModel<T> metaNeatGenome, bool validateAcyclic)
     {
         Debug.Assert(metaNeatGenome is not null && metaNeatGenome.IsAcyclic);
         _metaNeatGenome = metaNeatGenome;
@@ -50,7 +50,7 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
         ConnectionGenes<T> connGenes)
     {
         // Determine the set of node IDs, and create a mapping from node IDs to node indexes.
-        int[] hiddenNodeIdArr = ConnectionGenesUtils.CreateHiddenNodeIdArray(connGenes._connArr, _metaNeatGenome.InputOutputNodeCount, _workingIdSet);
+        int[] hiddenNodeIdArr = ConnectionGenesUtils.CreateHiddenNodeIdArray(connGenes._connArr, _workingIdSet);
 
         return Create(id, birthGeneration, connGenes, hiddenNodeIdArr);
     }
@@ -61,7 +61,7 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
         ConnectionGenes<T> connGenes,
         int[] hiddenNodeIdArr)
     {
-        int inputCount = _metaNeatGenome.InputNodeCount;
+        int inputCount = _metaNeatGenome.InputNodes.Length;
 
         // Create a mapping from node IDs to node indexes.
         Dictionary<int,int> nodeIdxById = BuildNodeIndexById(hiddenNodeIdArr);
@@ -140,9 +140,9 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
 
     private Dictionary<int,int> BuildNodeIndexById(int[] hiddenNodeIdArr)
     {
-        int inputCount = _metaNeatGenome.InputNodeCount;
-        int outputCount = _metaNeatGenome.OutputNodeCount;
-        int inputOutputCount = _metaNeatGenome.InputOutputNodeCount;
+        int inputCount = _metaNeatGenome.InputNodes.Length;
+        int outputCount = _metaNeatGenome.InputNodes.Length;
+        int inputOutputCount = _metaNeatGenome.InputNodes.Length;
 
         // Create a mapping from node IDs to node indexes.
         var nodeIdxById = new Dictionary<int,int>(outputCount + hiddenNodeIdArr.Length);
@@ -175,8 +175,8 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
         // of the keyed values. We could do that here by wrapping each entry in an object
         // reference (i.e. boxing), but that creates additional overhead (object header
         // allocation, heap allocation, garbage collection, etc.).
-        int inputCount = _metaNeatGenome.InputNodeCount;
-        int inputOutputCount = _metaNeatGenome.InputOutputNodeCount;
+        int inputCount = _metaNeatGenome.InputNodes.Length;
+        int inputOutputCount = _metaNeatGenome.InputNodes.Length;
 
         // Update the fixed output node IDs.
         // Pre-mapped output node indexes start after the last input node index.
