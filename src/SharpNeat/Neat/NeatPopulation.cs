@@ -24,7 +24,7 @@ public class NeatPopulation<T> : Population<NeatGenome<T>>
     /// <summary>
     /// NeatGenome metadata.
     /// </summary>
-    public MetaNeatGenome<T> MetaNeatGenome { get; }
+    public NeatModel<T> MetaNeatGenome { get; }
 
     /// <summary>
     /// NeatGenome builder.
@@ -68,7 +68,7 @@ public class NeatPopulation<T> : Population<NeatGenome<T>>
     /// <param name="targetSize">Population target size.</param>
     /// <param name="genomeList">A list of genomes that will make up the population.</param>
     public NeatPopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         int targetSize,
         List<NeatGenome<T>> genomeList)
@@ -96,7 +96,7 @@ public class NeatPopulation<T> : Population<NeatGenome<T>>
     /// <param name="genomeIdSeq">Genome ID sequence.</param>
     /// <param name="innovationIdSeq">Innovation ID sequence.</param>
     public NeatPopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         int targetSize,
         List<NeatGenome<T>> genomeList,
@@ -117,7 +117,7 @@ public class NeatPopulation<T> : Population<NeatGenome<T>>
     /// <param name="innovationIdSeq">Innovation ID sequence.</param>
     /// <param name="addedNodeHistoryBufferSize">The size to allocate for the added node history buffer.</param>
     public NeatPopulation(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         int targetSize,
         List<NeatGenome<T>> genomeList,

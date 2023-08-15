@@ -19,7 +19,7 @@ public sealed class NeatGenomeDecoderAcyclic : IGenomeDecoder<NeatGenome<double>
     public IBlackBox<double> Decode(
         NeatGenome<double> genome)
     {
-        Debug.Assert(genome?.MetaNeatGenome?.IsAcyclic == true);
+        Debug.Assert(genome?.Model?.IsAcyclic == true);
         Debug.Assert(genome?.ConnectionGenes is not null);
         Debug.Assert(genome.ConnectionGenes.Length == genome?.ConnectionIndexMap?.Length);
         Debug.Assert(genome.DirectedGraph is DirectedGraphAcyclic);
@@ -31,6 +31,6 @@ public sealed class NeatGenomeDecoderAcyclic : IGenomeDecoder<NeatGenome<double>
         return new NeuralNets.Double.Vectorized.NeuralNetAcyclic(
                 (DirectedGraphAcyclic)genome.DirectedGraph,
                 neuralNetWeightArr,
-                genome.MetaNeatGenome.ActivationFn.Fn);
+                genome.Model.ActivationFn.Fn);
     }
 }

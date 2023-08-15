@@ -11,15 +11,15 @@ namespace SharpNeat.Neat.Genome.IO;
 public sealed class NeatPopulationLoader<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeatModel<T> _metaNeatGenome;
     int _genomeId;
 
     /// <summary>
-    /// Construct with the provided <see cref="MetaNeatGenome{T}"/>.
+    /// Construct with the provided <see cref="NeatModel{T}"/>.
     /// </summary>
     /// <param name="metaNeatGenome">Neat genome metadata object.</param>
     public NeatPopulationLoader(
-        MetaNeatGenome<T> metaNeatGenome)
+        NeatModel<T> metaNeatGenome)
     {
         _metaNeatGenome = metaNeatGenome ?? throw new ArgumentNullException(nameof(metaNeatGenome));
     }

@@ -12,7 +12,7 @@ namespace SharpNeat.Neat.Genome;
 public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeatModel<T> _metaNeatGenome;
     readonly AcyclicGraphDepthAnalysis _graphDepthAnalysis;
     readonly HashSet<int> _workingIdSet;
 
@@ -31,7 +31,7 @@ public sealed class NeatGenomeBuilderAcyclic<T> : INeatGenomeBuilder<T>
     /// If the caller can guarantee that calls to Create() will provide acyclic graphs only, then
     /// <paramref name="validateAcyclic"/> can be set to false to avoid the cost of the cyclic graph check (which is relatively expensive to perform).
     /// </remarks>
-    public NeatGenomeBuilderAcyclic(MetaNeatGenome<T> metaNeatGenome, bool validateAcyclic)
+    public NeatGenomeBuilderAcyclic(NeatModel<T> metaNeatGenome, bool validateAcyclic)
     {
         Debug.Assert(metaNeatGenome is not null && metaNeatGenome.IsAcyclic);
         _metaNeatGenome = metaNeatGenome;

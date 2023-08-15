@@ -11,14 +11,14 @@ namespace SharpNeat.Neat.Genome;
 public sealed class NeatGenomeBuilderCyclic<T> : INeatGenomeBuilder<T>
     where T : struct
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeatModel<T> _metaNeatGenome;
     readonly HashSet<int> _workingIdSet;
 
     /// <summary>
     /// Construct with the given NEAT genome metadata.
     /// </summary>
     /// <param name="metaNeatGenome">NEAT genome metadata.</param>
-    public NeatGenomeBuilderCyclic(MetaNeatGenome<T> metaNeatGenome)
+    public NeatGenomeBuilderCyclic(NeatModel<T> metaNeatGenome)
     {
         Debug.Assert(metaNeatGenome is not null && !metaNeatGenome.IsAcyclic);
         _metaNeatGenome = metaNeatGenome;

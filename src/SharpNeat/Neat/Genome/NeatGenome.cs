@@ -42,7 +42,7 @@ public class NeatGenome<T> : IGenome
     /// <summary>
     /// Genome metadata.
     /// </summary>
-    public MetaNeatGenome<T> MetaNeatGenome { get; }
+    public NeatModel<T> Model { get; }
 
     /// <summary>
     /// Connection genes data structure.
@@ -117,7 +117,7 @@ public class NeatGenome<T> : IGenome
     /// <param name="connectionIndexMap">A mapping between genome connection indexes (in <paramref name="connGenes"/>),
     /// to reordered connections based on depth based node index allocations (optional, acyclic genomes only).</param>
     internal NeatGenome(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         int id,
         int birthGeneration,
         ConnectionGenes<T> connGenes,
@@ -135,7 +135,7 @@ public class NeatGenome<T> : IGenome
 
 #endif
 
-        MetaNeatGenome = metaNeatGenome;
+        Model = metaNeatGenome;
         Id = id;
         BirthGeneration = birthGeneration;
         ConnectionGenes = connGenes;
@@ -175,7 +175,7 @@ public class NeatGenome<T> : IGenome
         // array as is. We can do this because these arrays are treated as being immutable, i.e., a given genome's weight
         // array will never be changed. E.g. Weight mutation occurs on child genomes that have a copy of the parent
         // genome's weight array.
-        if(!MetaNeatGenome.IsAcyclic)
+        if(!Model.IsAcyclic)
         {
             return ConnectionGenes._weightArr;
         }

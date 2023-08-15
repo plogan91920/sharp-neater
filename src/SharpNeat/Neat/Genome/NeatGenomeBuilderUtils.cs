@@ -16,7 +16,7 @@ internal static class NeatGenomeBuilderUtils
     /// <param name="nodeIndexByIdMap">A mapping from node IDs to node indexes.</param>
     /// <returns>A new instance of <see cref="DirectedGraph"/>.</returns>
     public static DirectedGraph CreateDirectedGraph<T>(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         ConnectionGenes<T> connGenes,
         INodeIdMap nodeIndexByIdMap)
         where T : struct

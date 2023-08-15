@@ -1,5 +1,6 @@
 ﻿// This file is part of SharpNEAT; Copyright Colin D. Green.
 // See LICENSE.txt for details.
+using System.Diagnostics;
 using SharpNeat.NeuralNets;
 
 namespace SharpNeat.Neat.Genome;
@@ -9,9 +10,19 @@ namespace SharpNeat.Neat.Genome;
 /// Genome related values/settings that are consistent across all genomes for the lifetime of an evolutionary algorithm run.
 /// </summary>
 /// <typeparam name="T">Neural net numeric data type.</typeparam>
-public class MetaNeatGenome<T>
+public class NeatModel<T>
     where T : struct
 {
+    /// <summary>
+    /// The list of Concepts observed.
+    /// </summary>
+    Dictionary<string, NeatConcept<T>> Concepts { get; } = new();
+
+    /// <summary>
+    /// The list of Relationships observed between Concepts.
+    /// </summary>
+    List<NeatRelationship> Relationships { get; } = new();
+
     /// <summary>
     /// Input node count.
     /// </summary>
@@ -66,7 +77,7 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    internal MetaNeatGenome(
+    internal NeatModel(
         int inputNodeCount, int outputNodeCount,
         bool isAcyclic, int cyclesPerActivation,
         IActivationFunction<T> activationFn,
@@ -90,7 +101,7 @@ public class MetaNeatGenome<T>
     #region Static Factory Methods
 
     /// <summary>
-    /// Create a new instance of <see cref="MetaNeatGenome{T}"/>, with <see cref="IsAcyclic"/> set to true, i.e.,
+    /// Create a new instance of <see cref="NeatModel{T}"/>, with <see cref="IsAcyclic"/> set to true, i.e.,
     /// for evolving acyclic neural networks.
     /// </summary>
     /// <param name="inputNodeCount">Input node count.</param>
@@ -98,13 +109,13 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<T> CreateAcyclic(
+    /// <returns>A new instance of <see cref="NeatModel{T}"/>.</returns>
+    public static NeatModel<T> CreateAcyclic(
         int inputNodeCount, int outputNodeCount,
         IActivationFunction<T> activationFn,
         double connectionWeightScale = 5.0)
     {
-        return new MetaNeatGenome<T>(
+        return new NeatModel<T>(
             inputNodeCount, outputNodeCount,
             true, 0,
             activationFn,
@@ -112,7 +123,7 @@ public class MetaNeatGenome<T>
     }
 
     /// <summary>
-    /// Create a new instance of <see cref="MetaNeatGenome{T}"/>, with <see cref="IsAcyclic"/> set to false, i.e.,
+    /// Create a new instance of <see cref="NeatModel{T}"/>, with <see cref="IsAcyclic"/> set to false, i.e.,
     /// for evolving cyclic neural networks.
     /// </summary>
     /// <param name="inputNodeCount">Input node count.</param>
@@ -122,14 +133,14 @@ public class MetaNeatGenome<T>
     /// <param name="activationFn">The neuron activation function to use in evolved networks. NEAT uses the same
     /// activation function at each node.</param>
     /// <param name="connectionWeightScale">Maximum connection weight scale/magnitude.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<T> CreateCyclic(
+    /// <returns>A new instance of <see cref="NeatModel{T}"/>.</returns>
+    public static NeatModel<T> CreateCyclic(
         int inputNodeCount, int outputNodeCount,
         int cyclesPerActivation,
         IActivationFunction<T> activationFn,
         double connectionWeightScale = 5.0)
     {
-        return new MetaNeatGenome<T>(
+        return new NeatModel<T>(
             inputNodeCount, outputNodeCount,
             false, cyclesPerActivation,
             activationFn,
@@ -137,4 +148,89 @@ public class MetaNeatGenome<T>
     }
 
     #endregion
+
+    #region Public Methods
+
+    public ObservationInformation<T> Observe(NeatObservation<T>[] observations, NeatConnection<T>[] connections)
+    {
+        // Add observed concepts
+        foreach (NeatObservation<T> observation in observations)
+        {
+            if (Concepts.ContainsKey(observation.Key)) continue;
+
+            Concepts[observation.Key] = new NeatConcept<T>(observation.Key);
+        }
+
+        // Add observed relationships
+        foreach (NeatConnection<T> connection in connections)
+        {
+            if (Relationships.Any((r) => r.Equals(connection))) continue;
+
+            Relationships.Add(new NeatRelationship(connection.Key, connection.SourceKey, connection.TargetKey));
+        }
+
+        // Add observed traits and questions
+        Dictionary<Trait<T>, NodeKey> inputMap = new();
+        Dictionary<Question<T>, NodeKey> outputMap = new();
+        foreach (NeatObservation<T> observation in observations)
+        {
+            foreach (Trait<T> trait in observation.Traits)
+            {
+                int traitNodeId = Concepts[observation.Key].GetTraitNode(trait.Key);
+                inputMap[trait] = new NodeKey(observation.Key, traitNodeId);
+            }
+
+            foreach (Question<T> question in observation.Questions)
+            {
+                int questionNodeId = Concepts[observation.Key].GetQuestionNode(question.Key);
+                outputMap[question] = new NodeKey(observation.Key, questionNodeId);
+            }
+        }
+
+        return new ObservationInformation<T>(inputMap, outputMap);
+    }
+
+    #endregion
+}
+
+public struct ObservationInformation<T>
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public Dictionary<Trait<T>, NodeKey> InputMap;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Dictionary<Question<T>, NodeKey> OutputMap;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="inputMap"></param>
+    /// <param name="outputMap"></param>
+    public ObservationInformation(Dictionary<Trait<T>, NodeKey> inputMap, Dictionary<Question<T>, NodeKey> outputMap)
+    {
+        InputMap = inputMap;
+        OutputMap = outputMap;
+    }
+
+    public void Deconstruct(out Dictionary<Trait<T>, NodeKey> inputMap, out Dictionary<Question<T>, NodeKey> outputMap)
+    {
+        inputMap = InputMap;
+        outputMap = OutputMap;
+    }
+}
+
+public struct NodeKey
+{
+    public string ConceptKey;
+    public int Id;
+
+    public NodeKey(string conceptKey, int id)
+    {
+        ConceptKey = conceptKey;
+        Id = id;
+    }
 }

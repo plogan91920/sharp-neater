@@ -28,7 +28,7 @@ internal static class NeatGenomeAssertions<T>
     /// <param name="digraph">The directed graph that the current genome represents.</param>
     /// <param name="connectionIndexMap">A set of connection index mappings.</param>
     public static void AssertIsValid(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         int id,
         int birthGeneration,
         ConnectionGenes<T> connGenes,
@@ -67,7 +67,7 @@ internal static class NeatGenomeAssertions<T>
     #region Private Static Methods
 
     private static void AssertNodeCounts(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         int[] hiddenNodeIdArr,
         INodeIdMap nodeIndexByIdMap,
         DirectedGraph digraph)
@@ -109,7 +109,7 @@ internal static class NeatGenomeAssertions<T>
     }
 
     private static void AssertAcyclicGraph(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         DirectedGraph digraph,
         int[]? connectionIndexMap)
     {

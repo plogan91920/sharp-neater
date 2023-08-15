@@ -128,8 +128,8 @@ internal static class SpeciationStrategyTestUtils
         int outputNodeCount,
         double connectionsProportion)
     {
-        MetaNeatGenome<double> metaNeatGenome =
-            MetaNeatGenome<double>.CreateAcyclic(
+        NeatModel<double> metaNeatGenome =
+            NeatModel<double>.CreateAcyclic(
                 inputNodeCount: inputNodeCount,
                 outputNodeCount: outputNodeCount,
                 activationFn: new NeuralNets.Double.ActivationFunctions.ReLU());

@@ -15,13 +15,13 @@ public static class NeatGenomeLoader
     /// </summary>
     /// <typeparam name="T">Connection weight data type.</typeparam>
     /// <param name="path">The name and path of the file to load.</param>
-    /// <param name="metaNeatGenome">A <see cref="MetaNeatGenome{T}"/> instance; required to construct a new
-    /// <see cref="MetaNeatGenome{T}"/>.</param>
+    /// <param name="metaNeatGenome">A <see cref="NeatModel{T}"/> instance; required to construct a new
+    /// <see cref="NeatModel{T}"/>.</param>
     /// <param name="genomeId">The ID to assign to the new genome.</param>
     /// <returns>A new instance of <see cref="NeatGenome{T}"/>.</returns>
     public static NeatGenome<T> Load<T>(
         string path,
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         int genomeId)
         where T : struct
     {
@@ -38,13 +38,13 @@ public static class NeatGenomeLoader
     /// </summary>
     /// <typeparam name="T">Connection weight data type.</typeparam>
     /// <param name="stream">The stream to load from.</param>
-    /// <param name="metaNeatGenome">A <see cref="MetaNeatGenome{T}"/> instance; required to construct a new
-    /// <see cref="MetaNeatGenome{T}"/>.</param>
+    /// <param name="metaNeatGenome">A <see cref="NeatModel{T}"/> instance; required to construct a new
+    /// <see cref="NeatModel{T}"/>.</param>
     /// <param name="genomeId">The ID to assign to the new genome.</param>
     /// <returns>A new instance of <see cref="NeatGenome{T}"/>.</returns>
     public static NeatGenome<T> Load<T>(
         Stream stream,
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         int genomeId)
         where T : struct
     {

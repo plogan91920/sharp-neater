@@ -32,7 +32,7 @@ public static class NeatUtils
     {
         // Validate MetaNeatGenome and NeatExperiment are compatible; normally the former should have been created
         // based on the latter, but this is not enforced.
-        MetaNeatGenome<double> metaNeatGenome = neatPop.MetaNeatGenome;
+        NeatModel<double> metaNeatGenome = neatPop.MetaNeatGenome;
         ValidateCompatible(neatExperiment, metaNeatGenome);
 
         // Create a genomeList evaluator based on the experiment's configuration settings.
@@ -102,12 +102,12 @@ public static class NeatUtils
     }
 
     /// <summary>
-    /// Create a <see cref="MetaNeatGenome{T}"/> based on the parameters supplied by an
+    /// Create a <see cref="NeatModel{T}"/> based on the parameters supplied by an
     /// <see cref="INeatExperiment{T}"/>.
     /// </summary>
     /// <param name="neatExperiment">The neat experiment.</param>
-    /// <returns>A new instance of <see cref="MetaNeatGenome{T}"/>.</returns>
-    public static MetaNeatGenome<double> CreateMetaNeatGenome(
+    /// <returns>A new instance of <see cref="NeatModel{T}"/>.</returns>
+    public static NeatModel<double> CreateMetaNeatGenome(
         INeatExperiment<double> neatExperiment)
     {
         // Resolve the configured activation function name to an activation function instance.
@@ -117,7 +117,7 @@ public static class NeatUtils
         var activationFn = actFnFactory.GetActivationFunction(
             neatExperiment.ActivationFnName);
 
-        var metaNeatGenome = new MetaNeatGenome<double>(
+        var metaNeatGenome = new NeatModel<double>(
             inputNodeCount: neatExperiment.EvaluationScheme.InputCount,
             outputNodeCount: neatExperiment.EvaluationScheme.OutputCount,
             isAcyclic: neatExperiment.IsAcyclic,
@@ -180,7 +180,7 @@ public static class NeatUtils
 
     private static void ValidateCompatible(
         INeatExperiment<double> neatExperiment,
-        MetaNeatGenome<double> metaNeatGenome)
+        NeatModel<double> metaNeatGenome)
     {
         // Confirm that neatExperiment and metaNeatGenome are compatible with each other.
         if(neatExperiment.EvaluationScheme.InputCount != metaNeatGenome.InputNodeCount)

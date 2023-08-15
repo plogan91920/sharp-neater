@@ -101,7 +101,7 @@ public class NeatPopulationStatsTests
         IRandomSource rng)
     {
         var metaNeatGenome =
-            MetaNeatGenome<double>.CreateAcyclic(
+            NeatModel<double>.CreateAcyclic(
                 inputNodeCount: 3,
                 outputNodeCount: 2,
                 activationFn: new NeuralNets.Double.ActivationFunctions.ReLU());

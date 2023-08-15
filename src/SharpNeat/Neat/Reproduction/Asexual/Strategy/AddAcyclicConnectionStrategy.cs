@@ -19,7 +19,7 @@ namespace SharpNeat.Neat.Reproduction.Asexual.Strategy;
 public sealed class AddAcyclicConnectionStrategy<T> : IAsexualReproductionStrategy<T>
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
-    readonly MetaNeatGenome<T> _metaNeatGenome;
+    readonly NeatModel<T> _metaNeatGenome;
     readonly INeatGenomeBuilder<T> _genomeBuilder;
     readonly Int32Sequence _genomeIdSeq;
     readonly Int32Sequence _generationSeq;
@@ -38,7 +38,7 @@ public sealed class AddAcyclicConnectionStrategy<T> : IAsexualReproductionStrate
     /// <param name="genomeIdSeq">Genome ID sequence; for obtaining new genome IDs.</param>
     /// <param name="generationSeq">Generation sequence; for obtaining the current generation number.</param>
     public AddAcyclicConnectionStrategy(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,
         Int32Sequence generationSeq)
@@ -64,7 +64,7 @@ public sealed class AddAcyclicConnectionStrategy<T> : IAsexualReproductionStrate
     /// <inheritdoc/>
     public NeatGenome<T>? CreateChildGenome(NeatGenome<T> parent, IRandomSource rng)
     {
-        Debug.Assert(_metaNeatGenome == parent.MetaNeatGenome, "Parent genome has unexpected MetaNeatGenome.");
+        Debug.Assert(_metaNeatGenome == parent.Model, "Parent genome has unexpected MetaNeatGenome.");
 
         // Attempt to find a new connection that we can add to the genome.
         if(!TryGetConnection(parent, rng, out DirectedConnection directedConn, out int insertIdx))

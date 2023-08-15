@@ -13,7 +13,7 @@ public class NeatGenomeConverterTests
     public void GenomeShouldConvertToNetFileModel()
     {
         // Arrange.
-        var metaNeatGenome = MetaNeatGenome<double>.CreateAcyclic(3, 2, new ReLU());
+        var metaNeatGenome = NeatModel<double>.CreateAcyclic(3, 2, new ReLU());
         var genomeBuilder = NeatGenomeBuilderFactory<double>.Create(metaNeatGenome);
 
         // Simple acyclic graph.
@@ -53,7 +53,7 @@ public class NeatGenomeConverterTests
     {
         // Arrange.
         NetFileModel netFileModel = NetFile.Load("TestData/example2.net");
-        var metaNeatGenome = MetaNeatGenome<double>.CreateAcyclic(3, 2, new ReLU());
+        var metaNeatGenome = NeatModel<double>.CreateAcyclic(3, 2, new ReLU());
 
         // Act.
         NeatGenome<double> genome = NeatGenomeConverter.ToNeatGenome(

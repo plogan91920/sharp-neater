@@ -23,7 +23,7 @@ public class NeatReproductionSexual<T> : ISexualReproductionStrategy<T>
     /// <param name="generationSeq">Generation sequence; for obtaining the current generation number.</param>
     /// <param name="settings">Sexual reproduction settings.</param>
     public NeatReproductionSexual(
-        MetaNeatGenome<T> metaNeatGenome,
+        NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,
         Int32Sequence generationSeq,
