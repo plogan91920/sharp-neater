@@ -13,10 +13,10 @@ public interface IExperimentUiFactory
     /// Creates a new instance of <see cref="IExperimentUi"/> using the experiment
     /// configuration settings from the provided json object model.
     /// </summary>
-    /// <param name="neatExperiment">A neat experiment instance.</param>
+    /// <param name="neaterExperiment">A neat experiment instance.</param>
     /// <param name="jsonConfigStream">A stream from which experiment JSON configuration can be read.</param>
     /// <returns>A new instance of <see cref="IExperimentUi"/>.</returns>
     IExperimentUi CreateExperimentUi(
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         Stream jsonConfigStream);
 }

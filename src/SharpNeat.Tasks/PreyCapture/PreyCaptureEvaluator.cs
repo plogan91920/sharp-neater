@@ -9,7 +9,7 @@ namespace SharpNeat.Tasks.PreyCapture;
 /// <summary>
 /// Evaluator for the prey capture task.
 /// </summary>
-public sealed class PreyCaptureEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class PreyCaptureEvaluator : IPseudonomeEvaluator<double>
 {
     readonly PreyCaptureWorld _world;
     readonly int _trialsPerEvaluation;
@@ -40,8 +40,10 @@ public sealed class PreyCaptureEvaluator : IPhenomeEvaluator<IBlackBox<double>>
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
+        IBlackBox<double> box = pseudonome.BlackBox;
+
         // Perform multiple independent trials.
         int fitness = 0;
         for(int i=0; i < _trialsPerEvaluation; i++)

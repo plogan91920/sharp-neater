@@ -12,16 +12,16 @@ namespace SharpNeat.Experiments;
 /// <summary>
 /// <see cref="INeatExperiment{T}"/> extension methods.
 /// </summary>
-public static class NeatExperimentExtensions
+public static class NeaterExperimentExtensions
 {
     /// <summary>
-    /// Apply configuration to a given <see cref="INeatExperiment{T}"/> instance.
+    /// Apply configuration to a given <see cref="INeaterExperiment{T}"/> instance.
     /// </summary>
     /// <param name="experiment">The NEAT experiment to configure.</param>
     /// <param name="experimentConfig">The configuration to apply.</param>
     /// <typeparam name="T">Experiment black-box numeric data type.</typeparam>
     public static void Configure<T>(
-        this INeatExperiment<T> experiment,
+        this INeaterExperiment<T> experiment,
         ExperimentConfig experimentConfig)
         where T : struct
     {
@@ -50,8 +50,8 @@ public static class NeatExperimentExtensions
     #region Private Static Methods
 
     private static void ApplyConfiguration(
-        NeatEvolutionAlgorithmSettings settings,
-        NeatEvolutionAlgorithmConfig? config)
+        NeaterEvolutionAlgorithmSettings settings,
+        NeaterEvolutionAlgorithmConfig? config)
     {
         if(config is null)
             return;
@@ -66,8 +66,8 @@ public static class NeatExperimentExtensions
     }
 
     private static void ApplyConfiguration(
-        NeatReproductionAsexualSettings settings,
-        NeatReproductionAsexualConfig? config)
+        NeaterReproductionAsexualSettings settings,
+        NeaterReproductionAsexualConfig? config)
     {
         if(config is null)
             return;
@@ -79,8 +79,8 @@ public static class NeatExperimentExtensions
     }
 
     private static void ApplyConfiguration(
-        NeatReproductionSexualSettings settings,
-        NeatReproductionSexualConfig? config)
+        NeaterReproductionSexualSettings settings,
+        NeaterReproductionSexualConfig? config)
     {
         if(config is null)
             return;
@@ -89,7 +89,7 @@ public static class NeatExperimentExtensions
     }
 
     private static void ApplyConfiguration<T>(
-        INeatExperiment<T> experiment,
+        INeaterExperiment<T> experiment,
         ComplexityRegulationStrategyConfig? config)
         where T : struct
     {

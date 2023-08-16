@@ -7,11 +7,12 @@ namespace SharpNeat.Evaluation;
 /// <summary>
 /// A pool of phenome evaluators, in which the pool is implemented with a stack structure with thread synchronised access to the stack.
 /// </summary>
-/// <typeparam name="TPhenome">Phenome type.</typeparam>
-public sealed class PhenomeEvaluatorStackPool<TPhenome> : IPhenomeEvaluatorPool<TPhenome>
+/// <typeparam name="T">Phenome type.</typeparam>
+public sealed class PseudonomeEvaluatorStackPool<T> : IPseudonomeEvaluatorPool<T>
+    where T : struct
 {
-    readonly IPhenomeEvaluationScheme<TPhenome> _phenomeEvaluationScheme;
-    readonly LightweightStack<IPhenomeEvaluator<TPhenome>> _evaluatorStack;
+    readonly IPseudonomeEvaluationScheme<T> _pseudonomeEvaluationScheme;
+    readonly LightweightStack<IPseudonomeEvaluator<T>> _evaluatorStack;
 
     // Note. Do not make this readonly; it's a mutable struct.
     SpinLock _spinLock;
@@ -23,21 +24,21 @@ public sealed class PhenomeEvaluatorStackPool<TPhenome> : IPhenomeEvaluatorPool<
     /// </summary>
     /// <param name="phenomeEvaluationScheme">Phenome evaluation scheme.</param>
     /// <param name="initialPoolSize">Initial pool size.</param>
-    public PhenomeEvaluatorStackPool(
-        IPhenomeEvaluationScheme<TPhenome> phenomeEvaluationScheme,
+    public PseudonomeEvaluatorStackPool(
+        IPseudonomeEvaluationScheme<T> pseudonomeEvaluationScheme,
         int initialPoolSize)
     {
-        if(!phenomeEvaluationScheme.EvaluatorsHaveState)
+        if(!pseudonomeEvaluationScheme.EvaluatorsHaveState)
             throw new InvalidOperationException("A stateless evaluation scheme does not require an evaluator pool; just use a single evaluator instance concurrently.");
 
-        _phenomeEvaluationScheme = phenomeEvaluationScheme;
+        _pseudonomeEvaluationScheme = pseudonomeEvaluationScheme;
 
         // Create the stack with the spare capacity; to avoid re-alloc overhead if we require additional capacity.
-        _evaluatorStack = new LightweightStack<IPhenomeEvaluator<TPhenome>>(initialPoolSize * 2);
+        _evaluatorStack = new LightweightStack<IPseudonomeEvaluator<T>>(initialPoolSize * 2);
 
         // Pre-populate with evaluators.
         for(int i=0; i < initialPoolSize; i++)
-            _evaluatorStack.Push(phenomeEvaluationScheme.CreateEvaluator());
+            _evaluatorStack.Push(pseudonomeEvaluationScheme.CreateEvaluator());
 
         // Enable thread tracking only if the debugger is attached; it adds non-trivial overhead to Enter/Exit.
         _spinLock = new SpinLock(Debugger.IsAttached);
@@ -51,7 +52,7 @@ public sealed class PhenomeEvaluatorStackPool<TPhenome> : IPhenomeEvaluatorPool<
     /// Get an evaluator from the pool.
     /// </summary>
     /// <returns>An evaluator instance.</returns>
-    public IPhenomeEvaluator<TPhenome> GetEvaluator()
+    public IPseudonomeEvaluator<T> GetEvaluator()
     {
         bool lockTaken = false;
         try
@@ -71,14 +72,14 @@ public sealed class PhenomeEvaluatorStackPool<TPhenome> : IPhenomeEvaluatorPool<
 
         // If the pool is empty then create a new evaluator instance; this should get released
         // back into the pool, thus increasing the total number of evaluators being managed by the pool.
-        return _phenomeEvaluationScheme.CreateEvaluator();
+        return _pseudonomeEvaluationScheme.CreateEvaluator();
     }
 
     /// <summary>
     /// Releases an evaluator back into the pool.
     /// </summary>
     /// <param name="evaluator">The evaluator to release.</param>
-    public void ReleaseEvaluator(IPhenomeEvaluator<TPhenome> evaluator)
+    public void ReleaseEvaluator(IPseudonomeEvaluator<T> evaluator)
     {
         bool lockTaken = false;
         try

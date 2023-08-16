@@ -7,7 +7,7 @@ namespace SharpNeat.Tasks.Xor;
 /// <summary>
 /// Evaluation scheme for the logical XOR task.
 /// </summary>
-public sealed class XorEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class XorEvaluationScheme : IEvaluationScheme<double>
 {
     /// <inheritdoc/>
     public int InputCount => 3;
@@ -28,7 +28,7 @@ public sealed class XorEvaluationScheme : IBlackBoxEvaluationScheme<double>
     public bool EvaluatorsHaveState => false;
 
     /// <inheritdoc/>
-    public IPhenomeEvaluator<IBlackBox<double>> CreateEvaluator()
+    public IPseudonomeEvaluator<double> CreateEvaluator()
     {
         return new XorEvaluator();
     }

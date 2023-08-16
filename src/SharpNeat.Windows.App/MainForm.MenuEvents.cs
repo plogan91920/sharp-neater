@@ -25,7 +25,7 @@ partial class MainForm
         if(string.IsNullOrEmpty(filepath))
             return;
 
-        INeatExperiment<double> neatExperiment = GetNeatExperiment();
+        INeaterExperiment<double> neatExperiment = GetNeaterExperiment();
         NeatModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neatExperiment);
         NeatPopulationLoader<double> popLoader = new(metaNeatGenome);
         
@@ -61,8 +61,8 @@ partial class MainForm
         if(string.IsNullOrEmpty(filepath))
             return;
 
-        INeatExperiment<double> neatExperiment = GetNeatExperiment();
-        NeatModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neatExperiment);
+        INeaterExperiment<double> neaterExperiment = GetNeaterExperiment();
+        NeatModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neaterExperiment);
 
         try
         {
@@ -71,13 +71,13 @@ partial class MainForm
 
             // Create an instance of the default connection weight mutation scheme.
             var weightMutationScheme = WeightMutationSchemeFactory.CreateDefaultScheme(
-                neatExperiment.ConnectionWeightScale);
+                neaterExperiment.ConnectionWeightScale);
 
             _neatPop = NeatPopulationFactory<double>.CreatePopulation(
                 metaNeatGenome,
-                neatExperiment.PopulationSize,
+                neaterExperiment.PopulationSize,
                 seedGenome,
-                neatExperiment.ReproductionAsexualSettings,
+                neaterExperiment.ReproductionAsexualSettings,
                 weightMutationScheme);
 
             UpdateUiState();
@@ -94,8 +94,8 @@ partial class MainForm
         if(string.IsNullOrEmpty(filepath))
             return;
 
-        INeatExperiment<double> neatExperiment = GetNeatExperiment();
-        NeatModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neatExperiment);
+        INeaterExperiment<double> neaterExperiment = GetNeaterExperiment();
+        NeatModel<double> metaNeatGenome = NeatUtils.CreateMetaNeatGenome(neaterExperiment);
         NeatPopulationLoader<double> popLoader = new(metaNeatGenome);
 
         try
@@ -111,13 +111,13 @@ partial class MainForm
 
             // Create an instance of the default connection weight mutation scheme.
             var weightMutationScheme = WeightMutationSchemeFactory.CreateDefaultScheme(
-                neatExperiment.ConnectionWeightScale);
+                neaterExperiment.ConnectionWeightScale);
 
             _neatPop = NeatPopulationFactory<double>.CreatePopulation(
                 metaNeatGenome,
-                neatExperiment.PopulationSize,
+                neaterExperiment.PopulationSize,
                 seedGenomes,
-                neatExperiment.ReproductionAsexualSettings,
+                neaterExperiment.ReproductionAsexualSettings,
                 weightMutationScheme);
 
             UpdateUiState();

@@ -14,15 +14,15 @@ public static class ExperimentUiFactoryExtensions
     /// configuration settings from the provided json object model.
     /// </summary>
     /// <param name="experimentUiFactory">The experiment UI factory instance.</param>
-    /// <param name="neatExperiment">A neat experiment instance.</param>
+    /// <param name="neaterExperiment">A neat experiment instance.</param>
     /// <param name="jsonConfigFilename">The name of a file from which experiment JSON configuration can be read.</param>
     /// <returns>A new instance of <see cref="IExperimentUi"/>.</returns>
     public static IExperimentUi CreateExperimentUi(
         this IExperimentUiFactory experimentUiFactory,
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         string jsonConfigFilename)
     {
         using FileStream fs = File.OpenRead(jsonConfigFilename);
-        return experimentUiFactory.CreateExperimentUi(neatExperiment, fs);
+        return experimentUiFactory.CreateExperimentUi(neaterExperiment, fs);
     }
 }

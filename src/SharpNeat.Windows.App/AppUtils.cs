@@ -8,11 +8,11 @@ namespace SharpNeat.Windows.App;
 
 internal static class AppUtils
 {
-    public static INeatExperiment<double> CreateAndConfigureExperiment(
+    public static INeaterExperiment<double> CreateAndConfigureExperiment(
         ExperimentInfo expInfo)
     {
         // Create an experiment factory.
-        INeatExperimentFactory factory = (INeatExperimentFactory)Activator.CreateInstance(
+        INeaterExperimentFactory factory = (INeaterExperimentFactory)Activator.CreateInstance(
             expInfo.ExperimentFactory.AssemblyName,
             expInfo.ExperimentFactory.TypeName)
             .Unwrap();
@@ -22,7 +22,7 @@ internal static class AppUtils
     }
 
     public static IExperimentUi CreateAndConfigureExperimentUi(
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         ExperimentInfo expInfo)
     {
         if(expInfo.ExperimentUiFactory is null)
@@ -34,9 +34,9 @@ internal static class AppUtils
             expInfo.ExperimentUiFactory.TypeName)
             .Unwrap();
 
-        // Create an instance of INeatExperiment, configured using the supplied json config.
+        // Create an instance of INeaterExperiment, configured using the supplied json config.
         IExperimentUi experimentUi = factory.CreateExperimentUi(
-            neatExperiment,
+            neaterExperiment,
             expInfo.ConfigFile);
 
         return experimentUi;

@@ -19,7 +19,7 @@ namespace SharpNeat.Tasks.BinarySixMultiplexer;
 ///
 /// Evaluation consists of querying the provided black box for all possible input combinations (2^6 = 64).
 /// </summary>
-public sealed class BinarySixMultiplexerEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class BinarySixMultiplexerEvaluator : IPseudonomeEvaluator<double>
 {
     /// <summary>
     /// Evaluate the provided black box against the Binary 6-Multiplexer task,
@@ -27,10 +27,11 @@ public sealed class BinarySixMultiplexerEvaluator : IPhenomeEvaluator<IBlackBox<
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseuodonome)
     {
         double fitness = 0.0;
         bool success = true;
+        IBlackBox<double> box = pseuodonome.BlackBox;
         Span<double> inputs = box.Inputs.Span;
         Span<double> outputs = box.Outputs.Span;
 

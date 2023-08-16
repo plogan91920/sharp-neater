@@ -7,7 +7,7 @@ namespace SharpNeat.Tasks.PreyCapture;
 /// <summary>
 /// Evaluation scheme for the prey capture task.
 /// </summary>
-public sealed class PreyCaptureEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class PreyCaptureEvaluationScheme : IEvaluationScheme<double>
 {
     readonly int _preyInitMoves;
     readonly float _preySpeed;
@@ -66,7 +66,7 @@ public sealed class PreyCaptureEvaluationScheme : IBlackBoxEvaluationScheme<doub
     #region Public Methods
 
     /// <inheritdoc/>
-    public IPhenomeEvaluator<IBlackBox<double>> CreateEvaluator()
+    public IPseudonomeEvaluator<double> CreateEvaluator()
     {
         return new PreyCaptureEvaluator(
             _preyInitMoves,

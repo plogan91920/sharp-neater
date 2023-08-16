@@ -22,7 +22,7 @@ internal sealed partial class MainForm : Form
     private static readonly ILog __log = LogManager.GetLogger(typeof(MainForm));
 
     // The current NEAT experiment.
-    private INeatExperiment<double> _neatExperiment;
+    private INeaterExperiment<double> _neaterExperiment;
     private NeatPopulation<double> _neatPop;
     private EvolutionAlgorithmRunner _eaRunner;
     private IExperimentUi _experimentUi;
@@ -92,23 +92,23 @@ internal sealed partial class MainForm : Form
         cmbExperiments.SelectedIndex = 0;
     }
 
-    private INeatExperiment<double> GetNeatExperiment()
+    private INeaterExperiment<double> GetNeaterExperiment()
     {
         // Create a new experiment instance if one has not already been created.
-        _neatExperiment ??= CreateAndConfigureExperiment((ExperimentInfo)cmbExperiments.SelectedItem);
+        _neaterExperiment ??= CreateAndConfigureExperiment((ExperimentInfo)cmbExperiments.SelectedItem);
 
         // Read settings from the UI into the experiment instance, and return.
-        GetSettingsFromUi(_neatExperiment);
-        return _neatExperiment;
+        GetSettingsFromUi(_neaterExperiment);
+        return _neaterExperiment;
     }
 
     private IExperimentUi GetExperimentUi()
     {
-        INeatExperiment<double> neatExperiment = GetNeatExperiment();
+        INeaterExperiment<double> neaterExperiment = GetNeaterExperiment();
 
         // Create a new experiment instance if one has not already been created.
         _experimentUi ??= CreateAndConfigureExperimentUi(
-            neatExperiment,
+            neaterExperiment,
             (ExperimentInfo)cmbExperiments.SelectedItem);
 
         return _experimentUi;

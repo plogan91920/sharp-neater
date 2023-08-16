@@ -10,13 +10,13 @@ namespace SharpNeat.Tasks.Xor;
 /// <summary>
 /// A factory for creating instances of <see cref="INeatExperiment{T}"/> for the XOR task.
 /// </summary>
-public sealed class XorExperimentFactory : INeatExperimentFactory
+public sealed class XorExperimentFactory : INeaterExperimentFactory
 {
     /// <inheritdoc/>
     public string Id => "xor";
 
     /// <inheritdoc/>
-    public INeatExperiment<double> CreateExperiment(Stream jsonConfigStream)
+    public INeaterExperiment<double> CreateExperiment(Stream jsonConfigStream)
     {
         // Load experiment JSON config.
         ExperimentConfig experimentConfig = JsonUtils.Deserialize<ExperimentConfig>(jsonConfigStream);
@@ -26,7 +26,7 @@ public sealed class XorExperimentFactory : INeatExperimentFactory
 
         // Create a NeatExperiment object with the evaluation scheme,
         // and assign some default settings (these can be overridden by config).
-        var experiment = new NeatExperiment<double>(evalScheme, Id)
+        var experiment = new NeaterExperiment<double>(evalScheme, Id)
         {
             IsAcyclic = true,
             ActivationFnName = ActivationFunctionId.LeakyReLU.ToString()
@@ -38,7 +38,7 @@ public sealed class XorExperimentFactory : INeatExperimentFactory
     }
 
     /// <inheritdoc/>
-    public INeatExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
+    public INeaterExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
     {
         throw new NotImplementedException();
     }

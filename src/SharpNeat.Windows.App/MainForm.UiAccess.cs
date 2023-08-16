@@ -185,11 +185,11 @@ partial class MainForm
 
     private void UpdateUiState_EaStats()
     {
-        NeatEvolutionAlgorithmStatistics eaStats = (NeatEvolutionAlgorithmStatistics)_eaRunner.EA.Stats;
+        NeaterEvolutionAlgorithmStatistics eaStats = (NeaterEvolutionAlgorithmStatistics)_eaRunner.EA.Stats;
         NeatPopulationStatistics popStats = _neatPop.NeatPopulationStats;
 
         // Search mode.
-        ComplexityRegulationMode mode = ((NeatEvolutionAlgorithm<double>)_eaRunner.EA).ComplexityRegulationMode;
+        ComplexityRegulationMode mode = ((NeaterEvolutionAlgorithm<double>)_eaRunner.EA).ComplexityRegulationMode;
         txtSearchStatsMode.Text = mode.ToString();
         txtSearchStatsMode.BackColor = mode switch
         {
@@ -254,7 +254,7 @@ partial class MainForm
     #region Private Methods [Send Settings to UI]
 
     private void SendSettingsToUi(
-        INeatExperiment<double> experiment)
+        INeaterExperiment<double> experiment)
     {
         SendSettingsToUi(experiment.EvolutionAlgorithmSettings);
         SendSettingsToUi(experiment.ReproductionAsexualSettings);
@@ -264,7 +264,7 @@ partial class MainForm
     }
 
     private void SendSettingsToUi(
-        NeatEvolutionAlgorithmSettings settings)
+        NeaterEvolutionAlgorithmSettings settings)
     {
         SetValue(txtSpeciesCount, settings.SpeciesCount);
         SetValue(txtElitismProportion, settings.ElitismProportion);
@@ -275,7 +275,7 @@ partial class MainForm
     }
 
     private void SendSettingsToUi(
-        NeatReproductionAsexualSettings settings)
+        NeaterReproductionAsexualSettings settings)
     {
         SetValue(txtConnectionWeightMutationProbability, settings.ConnectionWeightMutationProbability);
         SetValue(txtAddNodeMutationProbability, settings.AddNodeMutationProbability);
@@ -288,7 +288,7 @@ partial class MainForm
     #region Private Methods [Get Settings from UI]
 
     private void GetSettingsFromUi(
-        INeatExperiment<double> experiment)
+        INeaterExperiment<double> experiment)
     {
         GetSettingsFromUi(experiment.EvolutionAlgorithmSettings);
         GetSettingsFromUi(experiment.ReproductionAsexualSettings);
@@ -298,7 +298,7 @@ partial class MainForm
     }
 
     private void GetSettingsFromUi(
-        NeatEvolutionAlgorithmSettings settings)
+        NeaterEvolutionAlgorithmSettings settings)
     {
         settings.SpeciesCount = GetValue(txtSpeciesCount, settings.SpeciesCount);
         settings.ElitismProportion = GetValue(txtElitismProportion, settings.ElitismProportion);
@@ -316,7 +316,7 @@ partial class MainForm
     }
 
     private void GetSettingsFromUi(
-        NeatReproductionAsexualSettings settings)
+        NeaterReproductionAsexualSettings settings)
     {
         double connectionWeightMutationProbability = GetValue(txtConnectionWeightMutationProbability, settings.ConnectionWeightMutationProbability);
         double addNodeMutationProbability = GetValue(txtAddNodeMutationProbability, settings.AddNodeMutationProbability);

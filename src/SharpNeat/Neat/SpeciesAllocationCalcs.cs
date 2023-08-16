@@ -23,7 +23,7 @@ internal static class SpeciesAllocationCalcs<T>
     /// <param name="rng">Random source.</param>
     public static void UpdateSpeciesAllocationSizes(
         NeatPopulation<T> pop,
-        NeatEvolutionAlgorithmSettings eaSettings,
+        NeaterEvolutionAlgorithmSettings eaSettings,
         IRandomSource rng)
     {
         // Calculate the new target size of each species using fitness sharing.
@@ -243,7 +243,7 @@ internal static class SpeciesAllocationCalcs<T>
     /// <param name="rng">Random source.</param>
     private static void UpdateEliteSelectionOffspringCounts(
         NeatPopulation<T> pop,
-        NeatEvolutionAlgorithmSettings eaSettings,
+        NeaterEvolutionAlgorithmSettings eaSettings,
         IRandomSource rng)
     {
         Species<T>[] speciesArr = pop.SpeciesArray!;
@@ -259,7 +259,7 @@ internal static class SpeciesAllocationCalcs<T>
 
     private static void AllocateEliteSelectionOffspringCounts(
         Species<T> species,
-        NeatEvolutionAlgorithmSettings eaSettings,
+        NeaterEvolutionAlgorithmSettings eaSettings,
         bool isBestGenomeSpecies,
         IRandomSource rng)
     {

@@ -15,7 +15,7 @@ public sealed class GenerativeFnRegressionUiFactory : IExperimentUiFactory
 {
     /// <inheritdoc/>
     public IExperimentUi CreateExperimentUi(
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         Stream jsonConfigStream)
     {
         // Load experiment JSON config.
@@ -30,7 +30,7 @@ public sealed class GenerativeFnRegressionUiFactory : IExperimentUiFactory
             out ParamSamplingInfo paramSamplingInfo);
 
         return new GenerativeFnRegressionUi(
-            neatExperiment, fn, paramSamplingInfo);
+            neaterExperiment, fn, paramSamplingInfo);
     }
 
     private static void ReadEvaluationSchemeConfig(

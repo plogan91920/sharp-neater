@@ -13,13 +13,12 @@ namespace SharpNeat.Evaluation;
 /// Genome decoding is performed by a provided IGenomeDecoder.
 /// Phenome evaluation is performed by a provided IPhenomeEvaluator.
 /// </remarks>
-public class SerialGenomeListEvaluator<TGenome,TPhenome> : IGenomeListEvaluator<TGenome>
-    where TGenome : IGenome
-    where TPhenome : IDisposable
+public class SerialGenomeListEvaluator<T> : IGenomeListEvaluator<NeatGenome<T>>
+    where T : struct
 {
-    readonly IGenomeDecoder<TGenome,TPhenome> _genomeDecoder;
-    readonly IPhenomeEvaluationScheme<TPhenome> _phenomeEvaluationScheme;
-    readonly IPhenomeEvaluator<TPhenome> _phenomeEvaluator;
+    readonly IGenomeDecoder<NeatGenome<T>,IBlackBox<T>> _genomeDecoder;
+    readonly IPseudonomeEvaluationScheme<T> _pseudonomeEvaluationScheme;
+    readonly IPseudonomeEvaluator<T> _pseudonomeEvaluator;
 
     #region Constructor
 
@@ -29,14 +28,14 @@ public class SerialGenomeListEvaluator<TGenome,TPhenome> : IGenomeListEvaluator<
     /// <param name="genomeDecoder">Genome decoder.</param>
     /// <param name="phenomeEvaluationScheme">Phenome evaluation scheme.</param>
     public SerialGenomeListEvaluator(
-        IGenomeDecoder<TGenome,TPhenome> genomeDecoder,
-        IPhenomeEvaluationScheme<TPhenome> phenomeEvaluationScheme)
+        IGenomeDecoder<NeatGenome<T>,IBlackBox<T>> genomeDecoder,
+        IPseudonomeEvaluationScheme<T> pseudonomeEvaluationScheme)
     {
         _genomeDecoder = genomeDecoder;
-        _phenomeEvaluationScheme = phenomeEvaluationScheme;
+        _pseudonomeEvaluationScheme = pseudonomeEvaluationScheme;
 
         // Note. SerialGenomeListEvaluator will only evaluate on one thread therefore only ever requires a single evaluator.
-        _phenomeEvaluator = phenomeEvaluationScheme.CreateEvaluator();
+        _pseudonomeEvaluator = pseudonomeEvaluationScheme.CreateEvaluator();
     }
 
     #endregion
@@ -50,7 +49,7 @@ public class SerialGenomeListEvaluator<TGenome,TPhenome> : IGenomeListEvaluator<
     /// An evaluation scheme that has some random/stochastic characteristics may give a different fitness score at each invocation
     /// for the same genome. Such a scheme is non-deterministic.
     /// </remarks>
-    public bool IsDeterministic => _phenomeEvaluationScheme.IsDeterministic;
+    public bool IsDeterministic => _pseudonomeEvaluationScheme.IsDeterministic;
 
     /// <summary>
     /// Gets a fitness comparer.
@@ -60,26 +59,26 @@ public class SerialGenomeListEvaluator<TGenome,TPhenome> : IGenomeListEvaluator<
     /// per genome then we need a more general purpose comparer to determine an ordering on FitnessInfo(s), i.e. to be able to
     /// determine which is the better FitenssInfo between any two.
     /// </remarks>
-    public IComparer<FitnessInfo> FitnessComparer => _phenomeEvaluationScheme.FitnessComparer;
+    public IComparer<FitnessInfo> FitnessComparer => _pseudonomeEvaluationScheme.FitnessComparer;
 
     /// <summary>
     /// Evaluates a list of genomes, assigning fitness info to each.
     /// </summary>
     /// <param name="genomeList">The list of genomes to evaluate.</param>
-    public void Evaluate(IList<TGenome> genomeList)
+    public void Evaluate(IList<NeatGenome<T>> genomeList)
     {
         // Decode and evaluate each genome in turn.
-        foreach(TGenome genome in genomeList)
+        foreach(NeatGenome<T> genome in genomeList)
         {
             // TODO: Implement phenome caching (to avoid decode cost when re-evaluating with a non-deterministic evaluation scheme).
-            using TPhenome phenome = _genomeDecoder.Decode(genome);
+            using IBlackBox<T> phenome = _genomeDecoder.Decode(genome);
             if(phenome is null)
             {   // Non-viable genome.
-                genome.FitnessInfo = _phenomeEvaluationScheme.NullFitness;
+                genome.FitnessInfo = _pseudonomeEvaluationScheme.NullFitness;
             }
             else
             {
-                genome.FitnessInfo = _phenomeEvaluator.Evaluate(phenome);
+                genome.FitnessInfo = _pseudonomeEvaluator.Evaluate(new Pseudonome<T>(genome, _genomeDecoder.Decode(genome)));
             }
         }
     }
@@ -92,7 +91,7 @@ public class SerialGenomeListEvaluator<TGenome,TPhenome> : IGenomeListEvaluator<
     /// <returns>Returns true if the fitness is good enough to signal the evolution algorithm to stop.</returns>
     public bool TestForStopCondition(FitnessInfo fitnessInfo)
     {
-        return _phenomeEvaluationScheme.TestForStopCondition(fitnessInfo);
+        return _pseudonomeEvaluationScheme.TestForStopCondition(fitnessInfo);
     }
 
     #endregion

@@ -5,7 +5,7 @@ namespace SharpNeat.Neat.EvolutionAlgorithm;
 /// <summary>
 /// NEAT specific evolution algorithm statistics.
 /// </summary>
-public class NeatEvolutionAlgorithmStatistics : EvolutionAlgorithmStatistics
+public class NeaterEvolutionAlgorithmStatistics : EvolutionAlgorithmStatistics
 {
     /// <summary>
     /// The total number of offspring genomes created since the evolution algorithm started.

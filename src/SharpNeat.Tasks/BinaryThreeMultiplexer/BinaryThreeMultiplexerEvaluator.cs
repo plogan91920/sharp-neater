@@ -18,7 +18,7 @@ namespace SharpNeat.Tasks.BinaryThreeMultiplexer;
 ///
 /// Evaluation consists of querying the provided black box for all possible input combinations (2^3 = 8).
 /// </summary>
-public sealed class BinaryThreeMultiplexerEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class BinaryThreeMultiplexerEvaluator : IPseudonomeEvaluator<double>
 {
     /// <summary>
     /// Evaluate the provided black box against the Binary 3-Multiplexer task,
@@ -26,10 +26,11 @@ public sealed class BinaryThreeMultiplexerEvaluator : IPhenomeEvaluator<IBlackBo
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
         double fitness = 0.0;
         bool success = true;
+        IBlackBox<double> box = pseudonome.BlackBox;
         Span<double> inputs = box.Inputs.Span;
         Span<double> outputs = box.Outputs.Span;
 

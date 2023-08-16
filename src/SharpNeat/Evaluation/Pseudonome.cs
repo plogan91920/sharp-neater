@@ -20,16 +20,16 @@ public class Pseudonome<T>
     /// </summary>
     readonly NeatModel<T> model;
 
-    readonly IBlackBox<T> blackBox;
+    public readonly IBlackBox<T> BlackBox;
 
     /// <summary>
     /// A standard constructor.
     /// </summary>
     /// <param name="genome">The genome to be converted.</param>
-    public Pseudonome(NeatGenome<T> genome, IBlackBox<T> _blackBox)
+    public Pseudonome(NeatGenome<T> genome, IBlackBox<T> blackBox)
     {
         model = genome.Model;
-        blackBox = _blackBox;
+        BlackBox = blackBox;
     }
 
     /// <summary>
@@ -62,14 +62,14 @@ public class Pseudonome<T>
         // build a digraph from the collapsed observations
 
         // run calculation
-        blackBox.Reset();
+        BlackBox.Reset();
 
-        var inputs = blackBox.Inputs.Span;
+        var inputs = BlackBox.Inputs.Span;
         inputs = inputValues.ToArray();
 
-        var outputs = blackBox.Outputs.Span;
+        var outputs = BlackBox.Outputs.Span;
 
-        blackBox.Activate();
+        BlackBox.Activate();
 
         // return output values
         Dictionary<Question<T>, T> outputValues = new();

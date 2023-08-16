@@ -9,7 +9,7 @@ namespace SharpNeat.Tasks.CartPole.SinglePole;
 /// <summary>
 /// Evaluator for the cart and single pole balancing task.
 /// </summary>
-public sealed class CartSinglePoleEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class CartSinglePoleEvaluator : IPseudonomeEvaluator<double>
 {
     #region Constants
 
@@ -67,7 +67,7 @@ public sealed class CartSinglePoleEvaluator : IPhenomeEvaluator<IBlackBox<double
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
         // The evaluation consists of four separate trials, each with their own fitness score.
         // The final overall fitness is given by the root mean squared (RMS) fitness. Using an RMS
@@ -77,6 +77,8 @@ public sealed class CartSinglePoleEvaluator : IPhenomeEvaluator<IBlackBox<double
 
         // Keep a running sum of the squared fitness scores.
         float fitnessSqrSum = 0f;
+
+        IBlackBox<double> box = pseudonome.BlackBox;
 
         // Trial 1.
         float fitness = RunTrial(box, 0.2f, DegreesToRadians(10f));

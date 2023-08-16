@@ -15,7 +15,7 @@ namespace SharpNeat.Tasks.FunctionRegression;
 /// Evaluation consists of querying the provided black box for a number of distinct values over the range of the
 /// continuous valued input, and comparing the black box response with the expected/correct response.
 /// </summary>
-public sealed class FuncRegressionEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class FuncRegressionEvaluator : IPseudonomeEvaluator<double>
 {
     readonly ParamSamplingInfo _paramSamplingInfo;
     readonly double _gradientMseWeight;
@@ -73,8 +73,10 @@ public sealed class FuncRegressionEvaluator : IPhenomeEvaluator<IBlackBox<double
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
+        IBlackBox<double> box = pseudonome.BlackBox;
+
         // Probe the black box over the full range of the input parameter.
         _blackBoxProbe.Probe(box, _yArr);
 

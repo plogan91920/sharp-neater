@@ -8,7 +8,7 @@ namespace SharpNeat.Tasks.GenerativeFunctionRegression;
 /// <summary>
 /// Evaluation scheme for the function regression task.
 /// </summary>
-public sealed class GenerativeFnRegressionEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class GenerativeFnRegressionEvaluationScheme : IEvaluationScheme<double>
 {
     readonly ParamSamplingInfo _paramSamplingInfo;
     readonly double _gradientMseWeight;
@@ -75,7 +75,7 @@ public sealed class GenerativeFnRegressionEvaluationScheme : IBlackBoxEvaluation
     #region Public Methods
 
     /// <inheritdoc/>
-    public IPhenomeEvaluator<IBlackBox<double>> CreateEvaluator()
+    public IPseudonomeEvaluator<double> CreateEvaluator()
     {
         return new FuncRegressionEvaluator(
             _paramSamplingInfo,

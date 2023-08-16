@@ -8,15 +8,15 @@ using SharpNeat.NeuralNets;
 namespace SharpNeat.Tasks.CartPole.SinglePole;
 
 /// <summary>
-/// A factory for creating instances of <see cref="INeatExperiment{T}"/> for the cart and single pole balancing task.
+/// A factory for creating instances of <see cref="INeaterExperiment{T}"/> for the cart and single pole balancing task.
 /// </summary>
-public sealed class CartSinglePoleExperimentFactory : INeatExperimentFactory
+public sealed class CartSinglePoleExperimentFactory : INeaterExperimentFactory
 {
     /// <inheritdoc/>
     public string Id => "cartpole-singlepole";
 
     /// <inheritdoc/>
-    public INeatExperiment<double> CreateExperiment(Stream jsonConfigStream)
+    public INeaterExperiment<double> CreateExperiment(Stream jsonConfigStream)
     {
         // Load experiment JSON config.
         ExperimentConfig experimentConfig = JsonUtils.Deserialize<ExperimentConfig>(jsonConfigStream);
@@ -26,7 +26,7 @@ public sealed class CartSinglePoleExperimentFactory : INeatExperimentFactory
 
         // Create a NeatExperiment object with the evaluation scheme,
         // and assign some default settings (these can be overridden by config).
-        var experiment = new NeatExperiment<double>(evalScheme, Id)
+        var experiment = new NeaterExperiment<double>(evalScheme, Id)
         {
             IsAcyclic = true,
             ActivationFnName = ActivationFunctionId.LogisticSteep.ToString()
@@ -38,7 +38,7 @@ public sealed class CartSinglePoleExperimentFactory : INeatExperimentFactory
     }
 
     /// <inheritdoc/>
-    public INeatExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
+    public INeaterExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
     {
         throw new NotImplementedException();
     }

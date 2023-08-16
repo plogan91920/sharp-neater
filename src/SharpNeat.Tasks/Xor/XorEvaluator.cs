@@ -16,18 +16,19 @@ namespace SharpNeat.Tasks.Xor;
 ///
 /// Evaluation consists of querying the provided black box for all possible input combinations (2^2 = 4).
 /// </summary>
-public sealed class XorEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class XorEvaluator : IPseudonomeEvaluator<double>
 {
     /// <summary>
     /// Evaluate the provided black box against the logical XOR task,
     /// and return its fitness score.
     /// </summary>
-    /// <param name="box">The black box to evaluate.</param>
+    /// <param name="pseudonome">The pseudonome to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
         double fitness = 0.0;
         bool success = true;
+        IBlackBox<double> box = pseudonome.BlackBox;
 
         // Test case 0, 0.
         double output = Activate(box, 0.0, 0.0);

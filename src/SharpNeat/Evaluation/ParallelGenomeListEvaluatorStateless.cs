@@ -14,13 +14,12 @@ namespace SharpNeat.Evaluation;
 /// This class is for use with a stateless (and therefore thread safe) phenome evaluator, i.e. one phenome evaluator is created
 /// and the is used concurrently by multiple threads.
 /// </remarks>
-public class ParallelGenomeListEvaluatorStateless<TGenome,TPhenome> : IGenomeListEvaluator<TGenome>
-    where TGenome : IGenome
-    where TPhenome : class, IDisposable
+public class ParallelGenomeListEvaluatorStateless<T> : IGenomeListEvaluator<NeatGenome<T>>
+    where T : struct
 {
-    readonly IGenomeDecoder<TGenome,TPhenome> _genomeDecoder;
-    readonly IPhenomeEvaluationScheme<TPhenome> _phenomeEvaluationScheme;
-    readonly IPhenomeEvaluator<TPhenome> _phenomeEvaluator;
+    readonly IGenomeDecoder<NeatGenome<T>,IBlackBox<T>> _genomeDecoder;
+    readonly IPseudonomeEvaluationScheme<T> _phenomeEvaluationScheme;
+    readonly IPseudonomeEvaluator<T> _phenomeEvaluator;
     readonly ParallelOptions _parallelOptions;
 
     #region Constructor
@@ -32,8 +31,8 @@ public class ParallelGenomeListEvaluatorStateless<TGenome,TPhenome> : IGenomeLis
     /// <param name="phenomeEvaluationScheme">Phenome evaluation scheme.</param>
     /// <param name="degreeOfParallelism">The desired degree of parallelism.</param>
     public ParallelGenomeListEvaluatorStateless(
-        IGenomeDecoder<TGenome,TPhenome> genomeDecoder,
-        IPhenomeEvaluationScheme<TPhenome> phenomeEvaluationScheme,
+        IGenomeDecoder<NeatGenome<T>,IBlackBox<T>> genomeDecoder,
+        IPseudonomeEvaluationScheme<T> phenomeEvaluationScheme,
         int degreeOfParallelism)
     {
         // This class can only accept an evaluation scheme that uses a stateless evaluator.
@@ -79,7 +78,7 @@ public class ParallelGenomeListEvaluatorStateless<TGenome,TPhenome> : IGenomeLis
     /// Evaluates a list of genomes, assigning fitness info to each.
     /// </summary>
     /// <param name="genomeList">The list of genomes to evaluate.</param>
-    public void Evaluate(IList<TGenome> genomeList)
+    public void Evaluate(IList<NeatGenome<T>> genomeList)
     {
         // Decode and evaluate genomes in parallel.
         Parallel.ForEach(
@@ -87,14 +86,14 @@ public class ParallelGenomeListEvaluatorStateless<TGenome,TPhenome> : IGenomeLis
             _parallelOptions,
             (genome) =>
             {
-                using TPhenome phenome = _genomeDecoder.Decode(genome);
+                using IBlackBox<T> phenome = _genomeDecoder.Decode(genome);
                 if(phenome is null)
                 {   // Non-viable genome.
                     genome.FitnessInfo = _phenomeEvaluationScheme.NullFitness;
                 }
                 else
                 {
-                    genome.FitnessInfo = _phenomeEvaluator.Evaluate(phenome);
+                    genome.FitnessInfo = _phenomeEvaluator.Evaluate(new Pseudonome<T>(genome, _genomeDecoder.Decode(genome)));
                 }
             });
     }

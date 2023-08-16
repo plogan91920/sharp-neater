@@ -42,17 +42,17 @@ public record ExperimentConfig
     /// <summary>
     /// NEAT evolution algorithm configuration.
     /// </summary>
-    public NeatEvolutionAlgorithmConfig? EvolutionAlgorithm { get; init; }
+    public NeaterEvolutionAlgorithmConfig? EvolutionAlgorithm { get; init; }
 
     /// <summary>
     /// NEAT asexual reproduction configuration.
     /// </summary>
-    public NeatReproductionAsexualConfig? ReproductionAsexual { get; init; }
+    public NeaterReproductionAsexualConfig? ReproductionAsexual { get; init; }
 
     /// <summary>
     /// NEAT sexual reproduction configuration.
     /// </summary>
-    public NeatReproductionSexualConfig? ReproductionSexual { get; init; }
+    public NeaterReproductionSexualConfig? ReproductionSexual { get; init; }
 
     /// <summary>
     /// The population size to use for the experiment.

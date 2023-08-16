@@ -5,7 +5,7 @@ namespace SharpNeat.Neat.EvolutionAlgorithm;
 /// <summary>
 /// NEAT evolution algorithm settings.
 /// </summary>
-public class NeatEvolutionAlgorithmSettings
+public class NeaterEvolutionAlgorithmSettings
 {
     /// <summary>
     /// The species count.
@@ -52,7 +52,7 @@ public class NeatEvolutionAlgorithmSettings
     /// <summary>
     /// Default constructor.
     /// </summary>
-    public NeatEvolutionAlgorithmSettings()
+    public NeaterEvolutionAlgorithmSettings()
     {
     }
 
@@ -60,7 +60,7 @@ public class NeatEvolutionAlgorithmSettings
     /// Copy constructor.
     /// </summary>
     /// <param name="copyFrom">The settings object to copy.</param>
-    public NeatEvolutionAlgorithmSettings(NeatEvolutionAlgorithmSettings copyFrom)
+    public NeaterEvolutionAlgorithmSettings(NeaterEvolutionAlgorithmSettings copyFrom)
     {
         SpeciesCount = copyFrom.SpeciesCount;
         ElitismProportion = copyFrom.ElitismProportion;
@@ -79,11 +79,11 @@ public class NeatEvolutionAlgorithmSettings
     /// Creates a new settings object based on the current settings object, but modified to be suitable for use when
     /// the evolution algorithm is in simplifying mode.
     /// </summary>
-    /// <returns>A new instance of <see cref="NeatEvolutionAlgorithmSettings"/>.</returns>
-    public NeatEvolutionAlgorithmSettings CreateSimplifyingSettings()
+    /// <returns>A new instance of <see cref="NeaterEvolutionAlgorithmSettings"/>.</returns>
+    public NeaterEvolutionAlgorithmSettings CreateSimplifyingSettings()
     {
         // Clone the current settings object.
-        var settings = new NeatEvolutionAlgorithmSettings(this)
+        var settings = new NeaterEvolutionAlgorithmSettings(this)
         {
             OffspringAsexualProportion = 1.0,
             OffspringSexualProportion = 0.0

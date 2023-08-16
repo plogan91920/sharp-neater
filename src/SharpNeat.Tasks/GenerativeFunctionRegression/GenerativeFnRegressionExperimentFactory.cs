@@ -9,15 +9,15 @@ using SharpNeat.Tasks.GenerativeFunctionRegression.ConfigModels;
 namespace SharpNeat.Tasks.GenerativeFunctionRegression;
 
 /// <summary>
-/// A factory for creating instances of <see cref="INeatExperiment{T}"/> for the generative sinewave task.
+/// A factory for creating instances of <see cref="INeaterExperiment{T}"/> for the generative sinewave task.
 /// </summary>
-public sealed class GenerativeFnRegressionExperimentFactory : INeatExperimentFactory
+public sealed class GenerativeFnRegressionExperimentFactory : INeaterExperimentFactory
 {
     /// <inheritdoc/>
     public string Id => "generative-sinewave";
 
     /// <inheritdoc/>
-    public INeatExperiment<double> CreateExperiment(Stream jsonConfigStream)
+    public INeaterExperiment<double> CreateExperiment(Stream jsonConfigStream)
     {
         // Load experiment JSON config.
         GenerativeFnRegressionExperimentConfig experimentConfig =
@@ -37,7 +37,7 @@ public sealed class GenerativeFnRegressionExperimentFactory : INeatExperimentFac
 
         // Create a NeatExperiment object with the evaluation scheme,
         // and assign some default settings (these can be overridden by config).
-        var experiment = new NeatExperiment<double>(evalScheme, Id)
+        var experiment = new NeaterExperiment<double>(evalScheme, Id)
         {
             IsAcyclic = false,
             CyclesPerActivation = 1,
@@ -50,7 +50,7 @@ public sealed class GenerativeFnRegressionExperimentFactory : INeatExperimentFac
     }
 
     /// <inheritdoc/>
-    public INeatExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
+    public INeaterExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
     {
         throw new NotImplementedException();
     }

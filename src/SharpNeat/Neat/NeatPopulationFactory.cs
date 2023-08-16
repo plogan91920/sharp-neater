@@ -183,7 +183,7 @@ public class NeatPopulationFactory<T>
         NeatModel<T> metaNeatGenome,
         int popSize,
         NeatGenome<T> seedGenome,
-        NeatReproductionAsexualSettings reproductionAsexualSettings,
+        NeaterReproductionAsexualSettings reproductionAsexualSettings,
         WeightMutationScheme<T> weightMutationScheme,
         IRandomSource? rng = null)
     {
@@ -197,7 +197,7 @@ public class NeatPopulationFactory<T>
         NeatPopulation<T> neatPop = new(metaNeatGenome, genomeBuilder, popSize, genomeList);
 
         // Create additional genomes by spawning offspring from the seed genome.
-        NeatReproductionAsexual<T> reproductionAsexual = new(
+        NeaterReproductionAsexual<T> reproductionAsexual = new(
             metaNeatGenome,
             genomeBuilder,
             neatPop.GenomeIdSeq,
@@ -233,7 +233,7 @@ public class NeatPopulationFactory<T>
         NeatModel<T> metaNeatGenome,
         int popSize,
         List<NeatGenome<T>> seedGenomes,
-        NeatReproductionAsexualSettings reproductionAsexualSettings,
+        NeaterReproductionAsexualSettings reproductionAsexualSettings,
         WeightMutationScheme<T> weightMutationScheme,
         IRandomSource? rng = null)
     {
@@ -256,7 +256,7 @@ public class NeatPopulationFactory<T>
         NeatPopulation<T> neatPop = new(metaNeatGenome, genomeBuilder, popSize, genomeList);
 
         // Create additional genomes by spawning offspring from the seed genomes.
-        NeatReproductionAsexual<T> reproductionAsexual = new(
+        NeaterReproductionAsexual<T> reproductionAsexual = new(
             metaNeatGenome,
             genomeBuilder,
             neatPop.GenomeIdSeq,

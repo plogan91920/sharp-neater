@@ -15,12 +15,12 @@ namespace SharpNeat.Neat.EvolutionAlgorithm;
 /// The NEAT  evolution algorithm.
 /// </summary>
 /// <typeparam name="T">Connection weight data type.</typeparam>
-public class NeatEvolutionAlgorithm<T> : IEvolutionAlgorithm
+public class NeaterEvolutionAlgorithm<T> : IEvolutionAlgorithm
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
-    NeatEvolutionAlgorithmSettings _eaSettingsCurrent;
-    readonly NeatEvolutionAlgorithmSettings _eaSettingsComplexifying;
-    readonly NeatEvolutionAlgorithmSettings _eaSettingsSimplifying;
+    NeaterEvolutionAlgorithmSettings _eaSettingsCurrent;
+    readonly NeaterEvolutionAlgorithmSettings _eaSettingsComplexifying;
+    readonly NeaterEvolutionAlgorithmSettings _eaSettingsSimplifying;
     readonly IGenomeListEvaluator<NeatGenome<T>> _evaluator;
     readonly ISpeciationStrategy<NeatGenome<T>,T> _speciationStrategy;
     readonly NeatPopulation<T> _pop;
@@ -29,11 +29,11 @@ public class NeatEvolutionAlgorithm<T> : IEvolutionAlgorithm
     readonly IComparer<NeatGenome<T>> _genomeComparerDescending;
 
     readonly Int32Sequence _generationSeq;
-    readonly NeatReproductionAsexual<T> _reproductionAsexual;
-    readonly NeatReproductionSexual<T> _reproductionSexual;
+    readonly NeaterReproductionAsexual<T> _reproductionAsexual;
+    readonly NeaterReproductionSexual<T> _reproductionSexual;
 
     readonly OffspringBuilder<T> _offspringBuilder;
-    readonly NeatEvolutionAlgorithmStatistics _eaStats = new();
+    readonly NeaterEvolutionAlgorithmStatistics _eaStats = new();
 
     // Fields used to calculate the evaluations per second statistic, on each successive update.
     static readonly TimeSpan __oneSec = TimeSpan.FromSeconds(1);
@@ -54,14 +54,14 @@ public class NeatEvolutionAlgorithm<T> : IEvolutionAlgorithm
     /// <param name="reproductionSexualSettings">Sexual reproduction settings.</param>
     /// <param name="weightMutationScheme">Connection weight mutation scheme.</param>
     /// <param name="rng">Random source (optional).</param>
-    public NeatEvolutionAlgorithm(
-        NeatEvolutionAlgorithmSettings eaSettings,
+    public NeaterEvolutionAlgorithm(
+        NeaterEvolutionAlgorithmSettings eaSettings,
         IGenomeListEvaluator<NeatGenome<T>> evaluator,
         ISpeciationStrategy<NeatGenome<T>,T> speciationStrategy,
         NeatPopulation<T> population,
         IComplexityRegulationStrategy complexityRegulationStrategy,
-        NeatReproductionAsexualSettings reproductionAsexualSettings,
-        NeatReproductionSexualSettings reproductionSexualSettings,
+        NeaterReproductionAsexualSettings reproductionAsexualSettings,
+        NeaterReproductionSexualSettings reproductionSexualSettings,
         WeightMutationScheme<T> weightMutationScheme,
         IRandomSource? rng = null)
     {
@@ -90,12 +90,12 @@ public class NeatEvolutionAlgorithm<T> : IEvolutionAlgorithm
 
         _generationSeq = new Int32Sequence();
 
-        _reproductionAsexual = new NeatReproductionAsexual<T>(
+        _reproductionAsexual = new NeaterReproductionAsexual<T>(
             _pop.MetaNeatGenome, _pop.GenomeBuilder,
             _pop.GenomeIdSeq, population.InnovationIdSeq, _generationSeq,
             _pop.AddedNodeBuffer, reproductionAsexualSettings, weightMutationScheme);
 
-        _reproductionSexual = new NeatReproductionSexual<T>(
+        _reproductionSexual = new NeaterReproductionSexual<T>(
             _pop.MetaNeatGenome, _pop.GenomeBuilder,
             _pop.GenomeIdSeq, _generationSeq,
             reproductionSexualSettings);

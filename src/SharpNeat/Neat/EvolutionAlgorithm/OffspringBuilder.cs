@@ -17,8 +17,8 @@ namespace SharpNeat.Neat.EvolutionAlgorithm;
 internal sealed class OffspringBuilder<T>
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
-    readonly NeatReproductionAsexual<T> _reproductionAsexual;
-    readonly NeatReproductionSexual<T> _reproductionSexual;
+    readonly NeaterReproductionAsexual<T> _reproductionAsexual;
+    readonly NeaterReproductionSexual<T> _reproductionSexual;
     readonly double _interspeciesMatingProportion;
     readonly IComparer<FitnessInfo> _fitnessComparer;
 
@@ -32,8 +32,8 @@ internal sealed class OffspringBuilder<T>
     /// <param name="interspeciesMatingProportion">Inter-species mating proportion.</param>
     /// <param name="fitnessComparer">Fitness comparer.</param>
     public OffspringBuilder(
-        NeatReproductionAsexual<T> reproductionAsexual,
-        NeatReproductionSexual<T> reproductionSexual,
+        NeaterReproductionAsexual<T> reproductionAsexual,
+        NeaterReproductionSexual<T> reproductionSexual,
         double interspeciesMatingProportion,
         IComparer<FitnessInfo> fitnessComparer)
     {

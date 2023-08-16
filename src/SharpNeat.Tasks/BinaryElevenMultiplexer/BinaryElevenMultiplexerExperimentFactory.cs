@@ -8,15 +8,15 @@ using SharpNeat.NeuralNets;
 namespace SharpNeat.Tasks.BinaryElevenMultiplexer;
 
 /// <summary>
-/// A factory for creating instances of <see cref="INeatExperiment{T}"/> for the Binary 11-multiplexer task.
+/// A factory for creating instances of <see cref="INeaterExperiment{T}"/> for the Binary 11-multiplexer task.
 /// </summary>
-public sealed class BinaryElevenMultiplexerExperimentFactory : INeatExperimentFactory
+public sealed class BinaryElevenMultiplexerExperimentFactory : INeaterExperimentFactory
 {
     /// <inheritdoc/>
     public string Id => "binary-11-multiplexer";
 
     /// <inheritdoc/>
-    public INeatExperiment<double> CreateExperiment(Stream jsonConfigStream)
+    public INeaterExperiment<double> CreateExperiment(Stream jsonConfigStream)
     {
         // Load experiment JSON config.
         ExperimentConfig experimentConfig = JsonUtils.Deserialize<ExperimentConfig>(jsonConfigStream);
@@ -26,7 +26,7 @@ public sealed class BinaryElevenMultiplexerExperimentFactory : INeatExperimentFa
 
         // Create a NeatExperiment object with the evaluation scheme,
         // and assign some default settings (these can be overridden by config).
-        var experiment = new NeatExperiment<double>(evalScheme, Id)
+        var experiment = new NeaterExperiment<double>(evalScheme, Id)
         {
             IsAcyclic = true,
             ActivationFnName = ActivationFunctionId.LeakyReLU.ToString()
@@ -38,7 +38,7 @@ public sealed class BinaryElevenMultiplexerExperimentFactory : INeatExperimentFa
     }
 
     /// <inheritdoc/>
-    public INeatExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
+    public INeaterExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream)
     {
         throw new NotImplementedException();
     }

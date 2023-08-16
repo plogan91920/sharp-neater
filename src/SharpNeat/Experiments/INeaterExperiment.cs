@@ -11,7 +11,7 @@ namespace SharpNeat.Experiments;
 /// An interface that brings together a number of settings objects that make up a given experiment.
 /// </summary>
 /// <typeparam name="T">Black box numeric data type.</typeparam>
-public interface INeatExperiment<T>
+public interface INeaterExperiment<T>
     where T : struct
 {
     /// <summary>
@@ -45,7 +45,7 @@ public interface INeatExperiment<T>
     /// <summary>
     /// Experiment evaluation scheme object.
     /// </summary>
-    IBlackBoxEvaluationScheme<T> EvaluationScheme { get; }
+    IEvaluationScheme<T> EvaluationScheme { get; }
 
     /// <summary>
     /// A boolean flag that indicates if the genomes that are evolved are acyclic,
@@ -66,17 +66,17 @@ public interface INeatExperiment<T>
     /// <summary>
     /// The <see cref="EvolutionAlgorithmSettings"/> to be used for the experiment.
     /// </summary>
-    NeatEvolutionAlgorithmSettings EvolutionAlgorithmSettings { get; }
+    NeaterEvolutionAlgorithmSettings EvolutionAlgorithmSettings { get; }
 
     /// <summary>
     /// The asexual reproduction settings to use for the experiment.
     /// </summary>
-    NeatReproductionAsexualSettings ReproductionAsexualSettings { get; }
+    NeaterReproductionAsexualSettings ReproductionAsexualSettings { get; }
 
     /// <summary>
     /// The sexual reproduction settings to use for the experiment.
     /// </summary>
-    NeatReproductionSexualSettings ReproductionSexualSettings { get; }
+    NeaterReproductionSexualSettings ReproductionSexualSettings { get; }
 
     /// <summary>
     /// The population size to use for the experiment.

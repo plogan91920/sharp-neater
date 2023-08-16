@@ -12,7 +12,7 @@ namespace SharpNeat.Neat.Reproduction.Asexual;
 /// Creation of offspring given a single parent (asexual reproduction).
 /// </summary>
 /// <typeparam name="T">Neural net numeric data type.</typeparam>
-public class NeatReproductionAsexual<T> : IAsexualReproductionStrategy<T>
+public class NeaterReproductionAsexual<T> : IAsexualReproductionStrategy<T>
     where T : struct, IBinaryFloatingPointIeee754<T>
 {
     readonly MutationTypeDistributions _mutationTypeDistributionsComplexifying;
@@ -38,7 +38,7 @@ public class NeatReproductionAsexual<T> : IAsexualReproductionStrategy<T>
     /// <param name="addedNodeBuffer">A history buffer of added nodes.</param>
     /// <param name="settings">Asexual reproduction settings.</param>
     /// <param name="weightMutationScheme">Connection weight mutation scheme.</param>
-    public NeatReproductionAsexual(
+    public NeaterReproductionAsexual(
         NeatModel<T> metaNeatGenome,
         INeatGenomeBuilder<T> genomeBuilder,
         Int32Sequence genomeIdSeq,

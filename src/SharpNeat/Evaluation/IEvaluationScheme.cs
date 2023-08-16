@@ -3,11 +3,11 @@
 namespace SharpNeat.Evaluation;
 
 /// <summary>
-/// Black box evaluation scheme, i.e. an <see cref="IPhenomeEvaluationScheme{TPhenome}"/> in which the
+/// Black box evaluation scheme, i.e. an <see cref="IPseudonomeEvaluationScheme{TPhenome}"/> in which the
 /// phenome type is an <see cref="IBlackBox{T}"/>.
 /// </summary>
 /// <typeparam name="T">Black box numeric data type.</typeparam>
-public interface IBlackBoxEvaluationScheme<T> : IPhenomeEvaluationScheme<IBlackBox<T>>
+public interface IEvaluationScheme<T> : IPseudonomeEvaluationScheme<T>
     where T : struct
 {
     /// <summary>

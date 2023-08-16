@@ -20,7 +20,7 @@ namespace SharpNeat.Tasks.CartPole.DoublePole;
 /// As things stand the problem is difficult enough in its current form, therefore we provide velocity inputs and define two very
 /// different pole lengths.
 /// </remarks>
-public sealed class CartDoublePoleEvaluator : IPhenomeEvaluator<IBlackBox<double>>
+public sealed class CartDoublePoleEvaluator : IPseudonomeEvaluator<double>
 {
     #region Constants
 
@@ -78,7 +78,7 @@ public sealed class CartDoublePoleEvaluator : IPhenomeEvaluator<IBlackBox<double
     /// </summary>
     /// <param name="box">The black box to evaluate.</param>
     /// <returns>A new instance of <see cref="FitnessInfo"/>.</returns>
-    public FitnessInfo Evaluate(IBlackBox<double> box)
+    public FitnessInfo Evaluate(Pseudonome<double> pseudonome)
     {
         // The evaluation consists of four separate trials, each with their own fitness score.
         // The final overall fitness is given by the root mean squared (RMS) fitness. Using an RMS
@@ -88,6 +88,8 @@ public sealed class CartDoublePoleEvaluator : IPhenomeEvaluator<IBlackBox<double
 
         // Keep a running sum of the squared fitness scores.
         float fitnessSqrSum = 0f;
+
+        IBlackBox<double> box = pseudonome.BlackBox;
 
         // Trial 1.
         float fitness = RunTrial(box, 0.0f, DegreesToRadians(1f), 0f);

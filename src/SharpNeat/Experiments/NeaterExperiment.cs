@@ -12,7 +12,7 @@ namespace SharpNeat.Experiments;
 /// An aggregation of settings objects that make up a given experiment.
 /// </summary>
 /// <typeparam name="T">Black box numeric data type.</typeparam>
-public class NeatExperiment<T> : INeatExperiment<T>
+public class NeaterExperiment<T> : INeaterExperiment<T>
     where T : struct
 {
     #region Construction
@@ -23,8 +23,8 @@ public class NeatExperiment<T> : INeatExperiment<T>
     /// <param name="evalScheme">Experiment evaluation scheme object.</param>
     /// <param name="factoryId">Experiment Factory ID.</param>
     /// <param name="id">Experiment ID (optional).</param>
-    public NeatExperiment(
-        IBlackBoxEvaluationScheme<T> evalScheme,
+    public NeaterExperiment(
+        IEvaluationScheme<T> evalScheme,
         string factoryId,
         string? id = null)
     {
@@ -36,9 +36,9 @@ public class NeatExperiment<T> : INeatExperiment<T>
         Name = id ?? Id;
 
         // Assign a set of default settings.
-        EvolutionAlgorithmSettings = new NeatEvolutionAlgorithmSettings();
-        ReproductionAsexualSettings = new NeatReproductionAsexualSettings();
-        ReproductionSexualSettings = new NeatReproductionSexualSettings();
+        EvolutionAlgorithmSettings = new NeaterEvolutionAlgorithmSettings();
+        ReproductionAsexualSettings = new NeaterReproductionAsexualSettings();
+        ReproductionSexualSettings = new NeaterReproductionSexualSettings();
         PopulationSize = 400;
         InitialInterconnectionsProportion = 0.05;
         ConnectionWeightScale = 5.0;
@@ -64,7 +64,7 @@ public class NeatExperiment<T> : INeatExperiment<T>
     public string Description { get; set; } = string.Empty;
 
     /// <inheritdoc/>
-    public IBlackBoxEvaluationScheme<T> EvaluationScheme { get; }
+    public IEvaluationScheme<T> EvaluationScheme { get; }
 
     /// <inheritdoc/>
     public bool IsAcyclic { get; set; }
@@ -76,13 +76,13 @@ public class NeatExperiment<T> : INeatExperiment<T>
     public string ActivationFnName { get; set; } = ActivationFunctionId.LeakyReLU.ToString();
 
     /// <inheritdoc/>
-    public NeatEvolutionAlgorithmSettings EvolutionAlgorithmSettings { get; }
+    public NeaterEvolutionAlgorithmSettings EvolutionAlgorithmSettings { get; }
 
     /// <inheritdoc/>
-    public NeatReproductionAsexualSettings ReproductionAsexualSettings { get; }
+    public NeaterReproductionAsexualSettings ReproductionAsexualSettings { get; }
 
     /// <inheritdoc/>
-    public NeatReproductionSexualSettings ReproductionSexualSettings { get; }
+    public NeaterReproductionSexualSettings ReproductionSexualSettings { get; }
 
     /// <inheritdoc/>
     public int PopulationSize { get; set; }

@@ -8,8 +8,9 @@ namespace SharpNeat.Evaluation;
 /// <remarks>
 /// Provides information related to the evaluation scheme, and a method for creating new evaluator instances.
 /// </remarks>
-/// <typeparam name="TPhenome">The phenome type to be evaluated.</typeparam>
-public interface IPhenomeEvaluationScheme<TPhenome>
+/// <typeparam name="T">The phenome type to be evaluated.</typeparam>
+public interface IPseudonomeEvaluationScheme<T>
+    where T : struct
 {
     /// <summary>
     /// Indicates if the evaluation scheme is deterministic, i.e. will always return the same fitness score for a given genome.
@@ -49,7 +50,7 @@ public interface IPhenomeEvaluationScheme<TPhenome>
     /// Create a new evaluator object.
     /// </summary>
     /// <returns>A new instance of <see cref="IPhenomeEvaluator{T}"/>.</returns>
-    IPhenomeEvaluator<TPhenome> CreateEvaluator();
+    IPseudonomeEvaluator<T> CreateEvaluator();
 
     /// <summary>
     /// Accepts a <see cref="FitnessInfo"/>, which is intended to be from the fittest genome in the population, and returns a boolean

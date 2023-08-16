@@ -7,7 +7,7 @@ namespace SharpNeat.Tasks.CartPole.SinglePole;
 /// <summary>
 /// Evaluation scheme for the cart and pole balancing task, with a single pole.
 /// </summary>
-public sealed class CartSinglePoleEvaluationScheme : IBlackBoxEvaluationScheme<double>
+public sealed class CartSinglePoleEvaluationScheme : IEvaluationScheme<double>
 {
     /// <inheritdoc/>
     public int InputCount => 3;
@@ -28,7 +28,7 @@ public sealed class CartSinglePoleEvaluationScheme : IBlackBoxEvaluationScheme<d
     public bool EvaluatorsHaveState => true;
 
     /// <inheritdoc/>
-    public IPhenomeEvaluator<IBlackBox<double>> CreateEvaluator()
+    public IPseudonomeEvaluator<double> CreateEvaluator()
     {
         return new CartSinglePoleEvaluator();
     }

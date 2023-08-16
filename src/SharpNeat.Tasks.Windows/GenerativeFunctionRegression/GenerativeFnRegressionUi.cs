@@ -11,16 +11,16 @@ namespace SharpNeat.Tasks.Windows.GenerativeFunctionRegression;
 
 public sealed class GenerativeFnRegressionUi : NeatExperimentUi
 {
-    readonly INeatExperiment<double> _neatExperiment;
+    readonly INeaterExperiment<double> _neaterExperiment;
     readonly Func<double, double> _fn;
     readonly ParamSamplingInfo _paramSamplingInfo;
 
     public GenerativeFnRegressionUi(
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         Func<double, double> fn,
         ParamSamplingInfo paramSamplingInfo)
     {
-        _neatExperiment = neatExperiment ?? throw new ArgumentNullException(nameof(neatExperiment));
+        _neaterExperiment = neaterExperiment ?? throw new ArgumentNullException(nameof(neaterExperiment));
         _fn = fn;
         _paramSamplingInfo = paramSamplingInfo;
     }
@@ -29,8 +29,8 @@ public sealed class GenerativeFnRegressionUi : NeatExperimentUi
     public override GenomeControl CreateTaskControl()
     {
         var genomeDecoder = NeatGenomeDecoderFactory.CreateGenomeDecoder(
-            _neatExperiment.IsAcyclic,
-            _neatExperiment.EnableHardwareAcceleratedNeuralNets);
+            _neaterExperiment.IsAcyclic,
+            _neaterExperiment.EnableHardwareAcceleratedNeuralNets);
 
         return new FnRegressionControl(
             _fn,

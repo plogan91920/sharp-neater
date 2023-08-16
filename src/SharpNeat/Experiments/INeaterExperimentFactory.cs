@@ -3,9 +3,9 @@
 namespace SharpNeat.Experiments;
 
 /// <summary>
-/// Represents a factory of <see cref="INeatExperiment{T}"/>.
+/// Represents a factory of <see cref="INeaterExperiment{T}"/>.
 /// </summary>
-public interface INeatExperimentFactory
+public interface INeaterExperimentFactory
 {
     /// <summary>
     /// Gets a unique human-readable ID for the experiment, e.g. 'binary-11-multiplexer'.
@@ -18,7 +18,7 @@ public interface INeatExperimentFactory
     /// </summary>
     /// <param name="jsonConfigStream">A stream from which experiment JSON configuration can be read.</param>
     /// <returns>A new instance of <see cref="INeatExperiment{T}"/>.</returns>
-    INeatExperiment<double> CreateExperiment(Stream jsonConfigStream);
+    INeaterExperiment<double> CreateExperiment(Stream jsonConfigStream);
 
     /// <summary>
     ///  Creates a new instance of <see cref="INeatExperiment{T}"/> using the provided NEAT experiment
@@ -27,5 +27,5 @@ public interface INeatExperimentFactory
     /// </summary>
     /// <param name="jsonConfigStream">A stream from which experiment JSON configuration can be read.</param>
     /// <returns>A new instance of <see cref="INeatExperiment{T}"/>.</returns>
-    INeatExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream);
+    INeaterExperiment<float> CreateExperimentSinglePrecision(Stream jsonConfigStream);
 }

@@ -15,7 +15,7 @@ partial class MainForm
     private void cmbExperiments_SelectedIndexChanged(object sender, EventArgs e)
     {
         // Clear any existing references, as these are specific to each experiment.
-        _neatExperiment = null;
+        _neaterExperiment = null;
         _experimentUi = null;
 
         // Close the genome form if it is open, as the content of this form is specific to each experiment.
@@ -44,7 +44,7 @@ partial class MainForm
         UpdateUiState_EaStats();
 
         // Update child forms (those that are open).
-        var bestGenome = ((NeatEvolutionAlgorithm<double>)_eaRunner.EA).Population.BestGenome;
+        var bestGenome = ((NeaterEvolutionAlgorithm<double>)_eaRunner.EA).Population.BestGenome;
 
         if(_bestGenomeForm is not null)
             _bestGenomeForm.Genome = bestGenome;

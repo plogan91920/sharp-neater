@@ -26,76 +26,76 @@ public static class NeatUtils
     /// <param name="neatPop">A pre constructed/loaded neat population; this must be compatible with the provided
     /// neat experiment, otherwise an exception will be thrown.</param>
     /// <returns>A new instance of <see cref="NeatEvolutionAlgorithm{T}"/>.</returns>
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm(
-        INeatExperiment<double> neatExperiment,
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm(
+        INeaterExperiment<double> neaterExperiment,
         NeatPopulation<double> neatPop)
     {
         // Validate MetaNeatGenome and NeatExperiment are compatible; normally the former should have been created
         // based on the latter, but this is not enforced.
         NeatModel<double> metaNeatGenome = neatPop.MetaNeatGenome;
-        ValidateCompatible(neatExperiment, metaNeatGenome);
+        ValidateCompatible(neaterExperiment, metaNeatGenome);
 
         // Create a genomeList evaluator based on the experiment's configuration settings.
-        var genomeListEvaluator = CreateGenomeListEvaluator(neatExperiment);
+        var genomeListEvaluator = CreateGenomeListEvaluator(neaterExperiment);
 
         // Create a speciation strategy based on the experiment's configuration settings.
-        var speciationStrategy = CreateSpeciationStrategy(neatExperiment);
+        var speciationStrategy = CreateSpeciationStrategy(neaterExperiment);
 
         // Create an instance of the default connection weight mutation scheme.
         var weightMutationScheme = WeightMutationSchemeFactory.CreateDefaultScheme(
-            neatExperiment.ConnectionWeightScale);
+            neaterExperiment.ConnectionWeightScale);
 
         // Pull all of the parts together into an evolution algorithm instance.
-        var ea = new NeatEvolutionAlgorithm<double>(
-            neatExperiment.EvolutionAlgorithmSettings,
+        var ea = new NeaterEvolutionAlgorithm<double>(
+            neaterExperiment.EvolutionAlgorithmSettings,
             genomeListEvaluator,
             speciationStrategy,
             neatPop,
-            neatExperiment.ComplexityRegulationStrategy,
-            neatExperiment.ReproductionAsexualSettings,
-            neatExperiment.ReproductionSexualSettings,
+            neaterExperiment.ComplexityRegulationStrategy,
+            neaterExperiment.ReproductionAsexualSettings,
+            neaterExperiment.ReproductionSexualSettings,
             weightMutationScheme);
 
         return ea;
     }
 
     /// <summary>
-    /// Create a new instance of <see cref="NeatEvolutionAlgorithm{T}"/> for the given neat experiment.
+    /// Create a new instance of <see cref="NeaterEvolutionAlgorithm{T}"/> for the given neat experiment.
     /// </summary>
     /// <param name="neatExperiment">A neat experiment instance; this conveys everything required to create a new
     /// evolution algorithm instance that is ready to be run.</param>
-    /// <returns>A new instance of <see cref="NeatEvolutionAlgorithm{T}"/>.</returns>
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm(
-        INeatExperiment<double> neatExperiment)
+    /// <returns>A new instance of <see cref="NeaterEvolutionAlgorithm{T}"/>.</returns>
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm(
+        INeaterExperiment<double> neaterExperiment)
     {
         // Create a genomeList evaluator based on the experiment's configuration settings.
-        var genomeListEvaluator = CreateGenomeListEvaluator(neatExperiment);
+        var genomeListEvaluator = CreateGenomeListEvaluator(neaterExperiment);
 
         // Create a MetaNeatGenome.
-        var metaNeatGenome = CreateMetaNeatGenome(neatExperiment);
+        var metaNeatGenome = CreateMetaNeatGenome(neaterExperiment);
 
         // Create an initial population of genomes.
         NeatPopulation<double> neatPop = NeatPopulationFactory<double>.CreatePopulation(
             metaNeatGenome,
-            connectionsProportion: neatExperiment.InitialInterconnectionsProportion,
-            popSize: neatExperiment.PopulationSize);
+            connectionsProportion: neaterExperiment.InitialInterconnectionsProportion,
+            popSize: neaterExperiment.PopulationSize);
 
         // Create a speciation strategy based on the experiment's configuration settings.
-        var speciationStrategy = CreateSpeciationStrategy(neatExperiment);
+        var speciationStrategy = CreateSpeciationStrategy(neaterExperiment);
 
         // Create an instance of the default connection weight mutation scheme.
         var weightMutationScheme = WeightMutationSchemeFactory.CreateDefaultScheme(
-            neatExperiment.ConnectionWeightScale);
+            neaterExperiment.ConnectionWeightScale);
 
         // Pull all of the parts together into an evolution algorithm instance.
-        var ea = new NeatEvolutionAlgorithm<double>(
-            neatExperiment.EvolutionAlgorithmSettings,
+        var ea = new NeaterEvolutionAlgorithm<double>(
+            neaterExperiment.EvolutionAlgorithmSettings,
             genomeListEvaluator,
             speciationStrategy,
             neatPop,
-            neatExperiment.ComplexityRegulationStrategy,
-            neatExperiment.ReproductionAsexualSettings,
-            neatExperiment.ReproductionSexualSettings,
+            neaterExperiment.ComplexityRegulationStrategy,
+            neaterExperiment.ReproductionAsexualSettings,
+            neaterExperiment.ReproductionSexualSettings,
             weightMutationScheme);
 
         return ea;
@@ -108,7 +108,7 @@ public static class NeatUtils
     /// <param name="neatExperiment">The neat experiment.</param>
     /// <returns>A new instance of <see cref="NeatModel{T}"/>.</returns>
     public static NeatModel<double> CreateMetaNeatGenome(
-        INeatExperiment<double> neatExperiment)
+        INeaterExperiment<double> neatExperiment)
     {
         // Resolve the configured activation function name to an activation function instance.
         var actFnFactory = new DefaultActivationFunctionFactory<double>(
@@ -136,28 +136,28 @@ public static class NeatUtils
     // to allow for tasks that require the entire population to be evaluated as a whole, e.g. simulated life/worlds.
     // Furthermore, a new interface IPhenomeListEvaluator will be needed to allow the code for those types of task to be abstracted away from the type of genome in use.
     private static IGenomeListEvaluator<NeatGenome<double>> CreateGenomeListEvaluator(
-        INeatExperiment<double> neatExperiment)
+        INeaterExperiment<double> neaterExperiment)
     {
         // Create a genome decoder based on experiment config settings.
         var genomeDecoder =
             NeatGenomeDecoderFactory.CreateGenomeDecoder(
-                neatExperiment.IsAcyclic,
-                neatExperiment.EnableHardwareAcceleratedNeuralNets);
+                neaterExperiment.IsAcyclic,
+                neaterExperiment.EnableHardwareAcceleratedNeuralNets);
 
         // Resolve degreeOfParallelism (-1 is allowed in config, but must be resolved here to an actual degree).
-        int degreeOfParallelismResolved = ResolveDegreeOfParallelism(neatExperiment);
+        int degreeOfParallelismResolved = ResolveDegreeOfParallelism(neaterExperiment);
 
         // Create a genomeList evaluator, and return.
         var genomeListEvaluator = GenomeListEvaluatorFactory.CreateEvaluator(
             genomeDecoder,
-            neatExperiment.EvaluationScheme,
+            neaterExperiment.EvaluationScheme,
             degreeOfParallelismResolved);
 
         return genomeListEvaluator;
     }
 
     private static ISpeciationStrategy<NeatGenome<double>, double> CreateSpeciationStrategy(
-        INeatExperiment<double> neatExperiment)
+        INeaterExperiment<double> neatExperiment)
     {
         // Resolve a degreeOfParallelism (-1 is allowed in config, but must be resolved here to an actual degree).
         int degreeOfParallelismResolved = ResolveDegreeOfParallelism(neatExperiment);
@@ -179,20 +179,20 @@ public static class NeatUtils
     #region Private Static Methods [Low Level Helper Methods]
 
     private static void ValidateCompatible(
-        INeatExperiment<double> neatExperiment,
+        INeaterExperiment<double> neaterExperiment,
         NeatModel<double> metaNeatGenome)
     {
         // Confirm that neatExperiment and metaNeatGenome are compatible with each other.
-        if(neatExperiment.EvaluationScheme.InputCount != metaNeatGenome.InputNodeCount)
+        if(neaterExperiment.EvaluationScheme.InputCount != metaNeatGenome.InputNodeCount)
             throw new ArgumentException("InputNodeCount does not match INeatExperiment.", nameof(metaNeatGenome));
 
-        if(neatExperiment.EvaluationScheme.OutputCount != metaNeatGenome.OutputNodeCount)
+        if(neaterExperiment.EvaluationScheme.OutputCount != metaNeatGenome.OutputNodeCount)
             throw new ArgumentException("OutputNodeCount does not match INeatExperiment.", nameof(metaNeatGenome));
 
-        if(neatExperiment.IsAcyclic != metaNeatGenome.IsAcyclic)
+        if(neaterExperiment.IsAcyclic != metaNeatGenome.IsAcyclic)
             throw new ArgumentException("IsAcyclic does not match INeatExperiment.", nameof(metaNeatGenome));
 
-        if(neatExperiment.ConnectionWeightScale != metaNeatGenome.ConnectionWeightScale)
+        if(neaterExperiment.ConnectionWeightScale != metaNeatGenome.ConnectionWeightScale)
             throw new ArgumentException("ConnectionWeightScale does not match INeatExperiment.", nameof(metaNeatGenome));
 
         // Note. neatExperiment.ActivationFnName is not being checked against metaNeatGenome.ActivationFn, as the
@@ -200,7 +200,7 @@ public static class NeatUtils
     }
 
     private static int ResolveDegreeOfParallelism(
-        INeatExperiment<double> neatExperiment)
+        INeaterExperiment<double> neatExperiment)
     {
         int degreeOfParallelism = neatExperiment.DegreeOfParallelism;
 
