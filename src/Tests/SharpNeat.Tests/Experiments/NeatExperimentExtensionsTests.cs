@@ -58,10 +58,10 @@ public class NeatExperimentExtensionsTests
         ExperimentConfig experimentConfig = JsonUtils.Deserialize<ExperimentConfig>(json);
 
         // Create a mock evaluation scheme.
-        var evalScheme = new Mock<IBlackBoxEvaluationScheme<double>>();
+        var evalScheme = new Mock<IEvaluationScheme<double>>();
 
         // Init a default settings object.
-        var experiment = new NeatExperiment<double>(
+        var experiment = new NeaterExperiment<double>(
             evalScheme.Object, "foo-experiment");
 
         // Apply the experiment config.

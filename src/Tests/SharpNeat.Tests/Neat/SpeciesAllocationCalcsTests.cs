@@ -14,7 +14,7 @@ public class SpeciesAllocationCalcsTests
     {
         IRandomSource rng = RandomDefaults.CreateRandomSource(0);
 
-        NeatEvolutionAlgorithmSettings eaSettings = new()
+        NeaterEvolutionAlgorithmSettings eaSettings = new()
         {
             SpeciesCount = 4
         };

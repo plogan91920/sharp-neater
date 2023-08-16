@@ -11,43 +11,43 @@ namespace TestApp1;
 
 public static class EvolutionAlgorithmFactory
 {
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Xor()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Xor()
     {
         var experimentFactory = new XorExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Binary6()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Binary6()
     {
         var experimentFactory = new BinarySixMultiplexerExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Binary11()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_Binary11()
     {
         var experimentFactory = new BinaryElevenMultiplexerExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_GenerativeSinewave()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_GenerativeSinewave()
     {
         var experimentFactory = new GenerativeFnRegressionExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_CartSinglePole()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_CartSinglePole()
     {
         var experimentFactory = new CartSinglePoleExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_CartDoublePole()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_CartDoublePole()
     {
         var experimentFactory = new CartDoublePoleExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);
     }
 
-    public static NeatEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_PreyCapture()
+    public static NeaterEvolutionAlgorithm<double> CreateNeatEvolutionAlgorithm_PreyCapture()
     {
         var experimentFactory = new PreyCaptureExperimentFactory();
         return Utils.CreateNeatEvolutionAlgorithm(experimentFactory);

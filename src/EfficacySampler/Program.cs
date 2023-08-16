@@ -32,7 +32,7 @@ sealed class Program
         XmlConfigurator.Configure(logRepository, new FileInfo("log4net.properties"));
 
         // Create and configure a NEAT experiment instance.
-        INeatExperiment<double>? experiment = InitExperiment(experimentId);
+        INeaterExperiment<double>? experiment = InitExperiment(experimentId);
         if(experiment is null)
             return;
 
@@ -62,7 +62,7 @@ sealed class Program
     #region Private Static Methods [Initialisation]
 
     private static IEvolutionAlgorithmHost CreateEvolutionAlgorithmHost(
-        INeatExperiment<double> experiment,
+        INeaterExperiment<double> experiment,
         StopCondition stopCond)
     {
         return stopCond.StopConditionType switch
@@ -73,7 +73,7 @@ sealed class Program
         };
     }
 
-    private static INeatExperiment<double>? InitExperiment(string experimentId)
+    private static INeaterExperiment<double>? InitExperiment(string experimentId)
     {
         switch(experimentId)
         {
@@ -87,21 +87,21 @@ sealed class Program
         return null;
     }
 
-    private static INeatExperiment<double> InitExperiment_BinaryElevenMultiplexer()
+    private static INeaterExperiment<double> InitExperiment_BinaryElevenMultiplexer()
     {
         // Create an instance of INeatExperiment for the binary 11-multiplexer task, configured using the supplied json config.
         var experimentFactory = new BinaryElevenMultiplexerExperimentFactory();
-        INeatExperiment<double> neatExperiment = 
+        INeaterExperiment<double> neatExperiment = 
             experimentFactory.CreateExperiment("config/binary-eleven-multiplexer.config.json");
 
         return neatExperiment;
     }
 
-    private static INeatExperiment<double> InitExperiment_Sinewave()
+    private static INeaterExperiment<double> InitExperiment_Sinewave()
     {
         // Create an instance of INeatExperiment for the generative sinewave task, configured using the supplied json config.
         var experimentFactory = new GenerativeFnRegressionExperimentFactory();
-        INeatExperiment<double> neatExperiment =
+        INeaterExperiment<double> neatExperiment =
             experimentFactory.CreateExperiment("config/generative-sinewave.config.json");
 
         return neatExperiment;

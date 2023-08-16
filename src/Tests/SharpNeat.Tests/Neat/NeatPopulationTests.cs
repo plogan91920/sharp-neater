@@ -61,8 +61,8 @@ public class NeatPopulationTests
 
         CalcWeightMinMaxMean(genome.ConnectionGenes._weightArr, out double min, out double max, out double mean);
 
-        Assert.True(min < -genome.MetaNeatGenome.ConnectionWeightScale * 0.98);
-        Assert.True(max > genome.MetaNeatGenome.ConnectionWeightScale * 0.98);
+        Assert.True(min < -genome.Model.ConnectionWeightScale * 0.98);
+        Assert.True(max > genome.Model.ConnectionWeightScale * 0.98);
         Assert.True(Math.Abs(mean) < 0.1);
     }
 
@@ -71,18 +71,18 @@ public class NeatPopulationTests
     private static void TestGenome(NeatGenome<double> genome)
     {
         Assert.NotNull(genome);
-        Assert.NotNull(genome.MetaNeatGenome);
-        Assert.Equal(3, genome.MetaNeatGenome.InputNodeCount);
-        Assert.Equal(2, genome.MetaNeatGenome.OutputNodeCount);
-        Assert.True(genome.MetaNeatGenome.IsAcyclic);
-        Assert.Equal(5.0, genome.MetaNeatGenome.ConnectionWeightScale);
+        Assert.NotNull(genome.Model);
+        Assert.Equal(3, genome.Model.InputNodeCount);
+        Assert.Equal(2, genome.Model.OutputNodeCount);
+        Assert.True(genome.Model.IsAcyclic);
+        Assert.Equal(5.0, genome.Model.ConnectionWeightScale);
 
         double x = 0.1;
-        genome.MetaNeatGenome.ActivationFn.Fn(ref x);
+        genome.Model.ActivationFn.Fn(ref x);
         Assert.Equal(0.1, x);
 
         x = -0.1;
-        genome.MetaNeatGenome.ActivationFn.Fn(ref x);
+        genome.Model.ActivationFn.Fn(ref x);
         Assert.Equal(0.0, x);
 
         Assert.Equal(6, genome.ConnectionGenes.Length);

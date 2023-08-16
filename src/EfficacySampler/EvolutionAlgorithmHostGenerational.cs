@@ -10,14 +10,14 @@ namespace EfficacySampler;
 /// </summary>
 public sealed class EvolutionAlgorithmHostGenerational : IEvolutionAlgorithmHost
 {
-    readonly INeatExperiment<double> _experiment;
+    readonly INeaterExperiment<double> _experiment;
     readonly int _stopGenerationCount;
     readonly Stopwatch _stopwatch;
 
     #region Constructor
 
     public EvolutionAlgorithmHostGenerational(
-        INeatExperiment<double> experiment,
+        INeaterExperiment<double> experiment,
         int stopGenerationCount)
     {
         _experiment = experiment;
@@ -33,7 +33,7 @@ public sealed class EvolutionAlgorithmHostGenerational : IEvolutionAlgorithmHost
     public Sample Sample()
     {
         // Create a new instance of an evolution algorithm.
-        NeatEvolutionAlgorithm<double> ea = NeatUtils.CreateNeatEvolutionAlgorithm(_experiment);
+        NeaterEvolutionAlgorithm<double> ea = NeatUtils.CreateNeatEvolutionAlgorithm(_experiment);
 
         // Start the stopwatch.
         _stopwatch.Restart();

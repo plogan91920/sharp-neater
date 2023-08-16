@@ -43,7 +43,7 @@ public class DeleteConnectionStrategyTests
             Assert.True(ConnectionGenesUtils.ValidateHiddenNodeIds(
                 childGenome.HiddenNodeIdArray,
                 childGenome.ConnectionGenes._connArr,
-                childGenome.MetaNeatGenome.InputOutputNodeCount));
+                childGenome.Model.InputOutputNodeCount));
         }
     }
 }

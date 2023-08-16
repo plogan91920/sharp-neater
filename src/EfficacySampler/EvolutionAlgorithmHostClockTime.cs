@@ -10,7 +10,7 @@ namespace EfficacySampler;
 /// </summary>
 public sealed class EvolutionAlgorithmHostClockTime : IEvolutionAlgorithmHost
 {
-    readonly INeatExperiment<double> _experiment;
+    readonly INeaterExperiment<double> _experiment;
     readonly TimeSpan _stopTimeSpan;
     readonly Stopwatch _stopwatch;
 
@@ -19,12 +19,12 @@ public sealed class EvolutionAlgorithmHostClockTime : IEvolutionAlgorithmHost
     readonly AutoResetEvent _awaitStopEvent = new(false);
     volatile bool _stopFlag;
 
-    NeatEvolutionAlgorithm<double>? _ea;
+    NeaterEvolutionAlgorithm<double>? _ea;
 
     #region Constructor
 
     public EvolutionAlgorithmHostClockTime(
-        INeatExperiment<double> experiment,
+        INeaterExperiment<double> experiment,
         int stopSeconds)
     {
         _experiment = experiment;
